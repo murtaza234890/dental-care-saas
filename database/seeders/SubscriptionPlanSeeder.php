@@ -17,8 +17,8 @@ class SubscriptionPlanSeeder extends Seeder
             ['slug' => 'starter'],
             [
                 'name' => 'Starter Clinic',
-                'price_monthly' => 3500.00,
-                'price_annual' => 35000.00,
+                'price_monthly' => 9999.00,
+                'price_annual' => 99990.00,
                 'currency' => 'PKR',
                 'max_doctors' => 1,
                 'max_staff' => 2,
@@ -37,8 +37,8 @@ class SubscriptionPlanSeeder extends Seeder
             ['slug' => 'professional'],
             [
                 'name' => 'Professional Practice',
-                'price_monthly' => 8500.00,
-                'price_annual' => 85000.00,
+                'price_monthly' => 19999.00,
+                'price_annual' => 199990.00,
                 'currency' => 'PKR',
                 'max_doctors' => 3,
                 'max_staff' => 6,
@@ -59,8 +59,8 @@ class SubscriptionPlanSeeder extends Seeder
             ['slug' => 'enterprise'],
             [
                 'name' => 'Enterprise Dental Hospital',
-                'price_monthly' => 18000.00,
-                'price_annual' => 180000.00,
+                'price_monthly' => 29999.00,
+                'price_annual' => 299990.00,
                 'currency' => 'PKR',
                 'max_doctors' => 10,
                 'max_staff' => 25,

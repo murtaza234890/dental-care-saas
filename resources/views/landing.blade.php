@@ -223,7 +223,7 @@
                         <p class="text-xs text-slate-500 mt-1">Ideal for solo dental practitioners.</p>
 
                         <div class="mt-6 flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-slate-900">3,500</span>
+                            <span class="text-4xl font-extrabold text-slate-900">9,999</span>
                             <span class="text-sm font-semibold text-slate-500">PKR / month</span>
                         </div>
 
@@ -265,7 +265,7 @@
                         <p class="text-xs text-slate-400 mt-1">For growing dental clinics with associates.</p>
 
                         <div class="mt-6 flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-white">8,500</span>
+                            <span class="text-4xl font-extrabold text-white">19,999</span>
                             <span class="text-sm font-semibold text-slate-400">PKR / month</span>
                         </div>
 
@@ -311,7 +311,7 @@
                         <p class="text-xs text-slate-500 mt-1">Multi-chair surgical dental hospitals.</p>
 
                         <div class="mt-6 flex items-baseline gap-1">
-                            <span class="text-4xl font-extrabold text-slate-900">18,000</span>
+                            <span class="text-4xl font-extrabold text-slate-900">29,999</span>
                             <span class="text-sm font-semibold text-slate-500">PKR / month</span>
                         </div>
 

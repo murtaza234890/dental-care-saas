@@ -1,25 +1,5 @@
 <x-layouts.app title="Edit Treatment - #{{ $treatment->id }}">
-    <div class="max-w-5xl mx-auto" x-data="{
-        selectedTeeth: {{ json_encode($selectedTeeth) }},
-        toothInput: '{{ old('tooth_numbers', $treatment->tooth_numbers) }}',
-        toggleTooth(tooth) {
-            let index = this.selectedTeeth.indexOf(tooth.toString());
-            if (index > -1) {
-                this.selectedTeeth.splice(index, 1);
-            } else {
-                this.selectedTeeth.push(tooth.toString());
-            }
-            this.selectedTeeth.sort();
-            this.toothInput = this.selectedTeeth.join(', ');
-        },
-        hasTooth(tooth) {
-            return this.selectedTeeth.includes(tooth.toString());
-        },
-        clearTeeth() {
-            this.selectedTeeth = [];
-            this.toothInput = '';
-        }
-    }">
+    <div class="max-w-5xl mx-auto" x-data="treatmentEditForm()">
         <!-- Breadcrumb & Header -->
         <div class="mb-6">
             <a href="{{ route('treatments.show', $treatment->id) }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition mb-2">
@@ -176,4 +156,30 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function treatmentEditForm() {
+            return {
+                selectedTeeth: {{ json_encode($selectedTeeth) }},
+                toothInput: '{{ old('tooth_numbers', $treatment->tooth_numbers) }}',
+                toggleTooth(tooth) {
+                    let index = this.selectedTeeth.indexOf(tooth.toString());
+                    if (index > -1) {
+                        this.selectedTeeth.splice(index, 1);
+                    } else {
+                        this.selectedTeeth.push(tooth.toString());
+                    }
+                    this.selectedTeeth.sort();
+                    this.toothInput = this.selectedTeeth.join(', ');
+                },
+                hasTooth(tooth) {
+                    return this.selectedTeeth.includes(tooth.toString());
+                },
+                clearTeeth() {
+                    this.selectedTeeth = [];
+                    this.toothInput = '';
+                }
+            };
+        }
+    </script>
 </x-layouts.app>

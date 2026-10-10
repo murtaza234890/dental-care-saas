@@ -1,61 +1,19 @@
 <x-layouts.app title="Issue New Invoice - DentalCare">
-    <div class="max-w-4xl mx-auto" x-data="{
-        servicesCatalog: @json($services),
-        items: [
-            {
-                service_id: '{{ old('items.0.service_id', $selectedAppointment->service_id ?? '') }}',
-                description: '{{ old('items.0.description', $selectedAppointment->service->name ?? '') }}',
-                unit_price: {{ (float) (old('items.0.unit_price', $selectedAppointment->service->standard_fee ?? 0) ?: 0) }},
-                quantity: {{ (int) (old('items.0.quantity', 1) ?: 1) }}
-            }
-        ],
-        discount: {{ (float) (old('discount_amount', 0) ?: 0) }},
-        collectUpfront: {{ old('initial_payment') ? 'true' : 'false' }},
-        upfrontAmount: {{ (float) (old('initial_payment_amount', 0) ?: 0) }},
-
-        onServiceChange(index) {
-            let sId = this.items[index].service_id;
-            let found = this.servicesCatalog.find(s => s.id == sId);
-            if (found) {
-                this.items[index].description = found.name;
-                this.items[index].unit_price = parseFloat(found.standard_fee);
-            }
-        },
-
-        addItem() {
-            this.items.push({
-                service_id: '',
-                description: '',
-                unit_price: 0,
-                quantity: 1
-            });
-        },
-
-        removeItem(index) {
-            if (this.items.length > 1) {
-                this.items.splice(index, 1);
-            }
-        },
-
-        subtotal() {
-            return this.items.reduce((sum, item) => {
-                let price = parseFloat(item.unit_price) || 0;
-                let qty = parseInt(item.quantity) || 0;
-                return sum + (price * qty);
-            }, 0);
-        },
-
-        grandTotal() {
-            let disc = parseFloat(this.discount) || 0;
-            return Math.max(0, this.subtotal() - disc);
-        },
-
-        syncUpfront() {
-            if (this.collectUpfront) {
-                this.upfrontAmount = this.grandTotal();
-            }
+    @php
+        $initialItems = old('items');
+        if (!$initialItems) {
+            $initialItems = [
+                [
+                    'service_id' => $selectedAppointment->service_id ?? '',
+                    'description' => $selectedAppointment->service->name ?? '',
+                    'unit_price' => $selectedAppointment->service->standard_fee ?? 0,
+                    'quantity' => 1,
+                ]
+            ];
         }
-    }">
+    @endphp
+
+    <div class="max-w-4xl mx-auto" x-data="invoiceForm()">
         <!-- Breadcrumb & Header -->
         <div class="mb-6">
             <a href="{{ route('invoices.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition mb-2">
@@ -311,4 +269,59 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function invoiceForm() {
+            return {
+                servicesCatalog: @json($services),
+                items: @json(array_values($initialItems)),
+                discount: {{ (float) (old('discount_amount', 0) ?: 0) }},
+                collectUpfront: {{ old('initial_payment') ? 'true' : 'false' }},
+                upfrontAmount: {{ (float) (old('initial_payment_amount', 0) ?: 0) }},
+
+                onServiceChange(index) {
+                    let sId = this.items[index].service_id;
+                    let found = this.servicesCatalog.find(function(s) { return s.id == sId; });
+                    if (found) {
+                        this.items[index].description = found.name;
+                        this.items[index].unit_price = parseFloat(found.standard_fee);
+                    }
+                },
+
+                addItem() {
+                    this.items.push({
+                        service_id: '',
+                        description: '',
+                        unit_price: 0,
+                        quantity: 1
+                    });
+                },
+
+                removeItem(index) {
+                    if (this.items.length > 1) {
+                        this.items.splice(index, 1);
+                    }
+                },
+
+                subtotal() {
+                    return this.items.reduce(function(sum, item) {
+                        let price = parseFloat(item.unit_price) || 0;
+                        let qty = parseInt(item.quantity) || 0;
+                        return sum + (price * qty);
+                    }, 0);
+                },
+
+                grandTotal() {
+                    let disc = parseFloat(this.discount) || 0;
+                    return Math.max(0, this.subtotal() - disc);
+                },
+
+                syncUpfront() {
+                    if (this.collectUpfront) {
+                        this.upfrontAmount = this.grandTotal();
+                    }
+                }
+            };
+        }
+    </script>
 </x-layouts.app>

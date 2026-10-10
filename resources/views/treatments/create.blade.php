@@ -1,49 +1,5 @@
 <x-layouts.app title="Record Clinical Procedure - DentalCare">
-    <div class="max-w-5xl mx-auto" x-data="{
-        selectedTeeth: {{ json_encode($selectedTeeth) }},
-        toothInput: '{{ old('tooth_numbers', '') }}',
-        toggleTooth(tooth) {
-            let index = this.selectedTeeth.indexOf(tooth.toString());
-            if (index > -1) {
-                this.selectedTeeth.splice(index, 1);
-            } else {
-                this.selectedTeeth.push(tooth.toString());
-            }
-            this.selectedTeeth.sort();
-            this.toothInput = this.selectedTeeth.join(', ');
-        },
-        hasTooth(tooth) {
-            return this.selectedTeeth.includes(tooth.toString());
-        },
-        clearTeeth() {
-            this.selectedTeeth = [];
-            this.toothInput = '';
-        },
-        selectUpper() {
-            let upper = ['18','17','16','15','14','13','12','11','21','22','23','24','25','26','27','28'];
-            this.selectedTeeth = Array.from(new Set([...this.selectedTeeth, ...upper])).sort();
-            this.toothInput = this.selectedTeeth.join(', ');
-        },
-        selectLower() {
-            let lower = ['48','47','46','45','44','43','42','41','31','32','33','34','35','36','37','38'];
-            this.selectedTeeth = Array.from(new Set([...this.selectedTeeth, ...lower])).sort();
-            this.toothInput = this.selectedTeeth.join(', ');
-        },
-        scheduleFollowup: {{ old('schedule_followup') ? 'true' : 'false' }},
-        createInvoice: {{ old('create_invoice', '1') ? 'true' : 'false' }},
-        setDiagnosis(text) {
-            let current = document.getElementById('diagnosis').value;
-            document.getElementById('diagnosis').value = current ? current + '; ' + text : text;
-        },
-        setTreatment(text) {
-            let current = document.getElementById('treatment_rendered').value;
-            document.getElementById('treatment_rendered').value = current ? current + '; ' + text : text;
-        },
-        setPrescription(text) {
-            let current = document.getElementById('prescription').value;
-            document.getElementById('prescription').value = current ? current + '\n' + text : text;
-        }
-    }">
+    <div class="max-w-5xl mx-auto" x-data="treatmentCreateForm()">
         <!-- Breadcrumb & Header -->
         <div class="mb-6">
             <a href="{{ route('treatments.index') }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-600 hover:text-cyan-700 transition mb-2">
@@ -452,4 +408,54 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function treatmentCreateForm() {
+            return {
+                selectedTeeth: {{ json_encode($selectedTeeth) }},
+                toothInput: '{{ old('tooth_numbers', '') }}',
+                toggleTooth(tooth) {
+                    let index = this.selectedTeeth.indexOf(tooth.toString());
+                    if (index > -1) {
+                        this.selectedTeeth.splice(index, 1);
+                    } else {
+                        this.selectedTeeth.push(tooth.toString());
+                    }
+                    this.selectedTeeth.sort();
+                    this.toothInput = this.selectedTeeth.join(', ');
+                },
+                hasTooth(tooth) {
+                    return this.selectedTeeth.includes(tooth.toString());
+                },
+                clearTeeth() {
+                    this.selectedTeeth = [];
+                    this.toothInput = '';
+                },
+                selectUpper() {
+                    let upper = ['18','17','16','15','14','13','12','11','21','22','23','24','25','26','27','28'];
+                    this.selectedTeeth = Array.from(new Set([...this.selectedTeeth, ...upper])).sort();
+                    this.toothInput = this.selectedTeeth.join(', ');
+                },
+                selectLower() {
+                    let lower = ['48','47','46','45','44','43','42','41','31','32','33','34','35','36','37','38'];
+                    this.selectedTeeth = Array.from(new Set([...this.selectedTeeth, ...lower])).sort();
+                    this.toothInput = this.selectedTeeth.join(', ');
+                },
+                scheduleFollowup: {{ old('schedule_followup') ? 'true' : 'false' }},
+                createInvoice: {{ old('create_invoice', '1') ? 'true' : 'false' }},
+                setDiagnosis(text) {
+                    let current = document.getElementById('diagnosis').value;
+                    document.getElementById('diagnosis').value = current ? current + '; ' + text : text;
+                },
+                setTreatment(text) {
+                    let current = document.getElementById('treatment_rendered').value;
+                    document.getElementById('treatment_rendered').value = current ? current + '; ' + text : text;
+                },
+                setPrescription(text) {
+                    let current = document.getElementById('prescription').value;
+                    document.getElementById('prescription').value = current ? current + '\n' + text : text;
+                }
+            };
+        }
+    </script>
 </x-layouts.app>

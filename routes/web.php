@@ -51,6 +51,11 @@ Route::middleware('auth')->group(function () {
     // Clinical Treatment Records & Dental Charting
     Route::resource('treatments', \App\Http\Controllers\TreatmentRecordController::class);
 
+    // Invoicing, Billing Engine & Payment Receipts
+    Route::resource('invoices', \App\Http\Controllers\InvoiceController::class);
+    Route::post('/invoices/{invoice}/payments', [\App\Http\Controllers\PaymentController::class, 'store'])->name('invoices.payments.store');
+    Route::get('/payments/{payment}/receipt', [\App\Http\Controllers\PaymentController::class, 'receipt'])->name('payments.receipt');
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

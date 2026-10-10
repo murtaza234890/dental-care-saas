@@ -64,11 +64,15 @@ class Invoice extends Model
         $paid = (float) $this->payments()->sum('amount');
         $balance = max(0, $total - $paid);
 
-        $status = 'unpaid';
-        if ($balance <= 0 && $total > 0) {
-            $status = 'paid';
-        } elseif ($paid > 0 && $balance > 0) {
-            $status = 'partially_paid';
+        $status = $this->status === 'cancelled' ? 'cancelled' : 'unpaid';
+        if ($this->status !== 'cancelled') {
+            if ($balance <= 0) {
+                $status = 'paid';
+            } elseif ($paid > 0 && $balance > 0) {
+                $status = 'partially_paid';
+            } else {
+                $status = 'unpaid';
+            }
         }
 
         $this->update([

@@ -468,6 +468,11 @@
             <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
                 <div class="p-4 border-b border-slate-100 flex items-center justify-between">
                     <h4 class="font-bold text-xs uppercase tracking-wider text-slate-700">Invoices & Billing History</h4>
+                    <a href="{{ route('invoices.create', ['patient_id' => $patient->id]) }}"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-600 text-white text-xs font-bold hover:bg-cyan-700 transition">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Issue Invoice
+                    </a>
                 </div>
 
                 <table class="w-full text-left text-xs text-slate-600">
@@ -479,13 +484,16 @@
                             <th class="px-6 py-4">Paid</th>
                             <th class="px-6 py-4">Balance</th>
                             <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($patient->invoices as $inv)
                             <tr class="hover:bg-slate-50/60 transition">
                                 <td class="px-6 py-4 font-mono font-bold text-slate-900">
-                                    {{ $inv->invoice_number }}
+                                    <a href="{{ route('invoices.show', $inv->id) }}" class="text-cyan-700 hover:underline">
+                                        {{ $inv->invoice_number }}
+                                    </a>
                                 </td>
                                 <td class="px-6 py-4 text-slate-600">
                                     {{ $inv->created_at->format('M d, Y') }}
@@ -508,16 +516,25 @@
                                         <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200">
                                             Partial
                                         </span>
+                                    @elseif($inv->status === 'cancelled')
+                                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-slate-100 text-slate-500 border border-slate-200">
+                                            Cancelled
+                                        </span>
                                     @else
                                         <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-rose-50 text-rose-700 border border-rose-200">
                                             Unpaid
                                         </span>
                                     @endif
                                 </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{{ route('invoices.show', $inv->id) }}" class="text-cyan-600 hover:text-cyan-800 font-bold">
+                                        View &rarr;
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-xs text-slate-400">
+                                <td colspan="7" class="px-6 py-8 text-center text-xs text-slate-400">
                                     No invoices issued for this patient yet.
                                 </td>
                             </tr>
@@ -541,6 +558,7 @@
                                 <th class="px-6 py-4">Reference</th>
                                 <th class="px-6 py-4">Received By</th>
                                 <th class="px-6 py-4 text-right">Amount</th>
+                                <th class="px-6 py-4 text-right">Receipt</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
@@ -560,6 +578,12 @@
                                     </td>
                                     <td class="px-6 py-4 text-right font-mono font-bold text-emerald-700">
                                         Rs. {{ number_format($pmt->amount, 0) }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="{{ route('payments.receipt', $pmt->id) }}" target="_blank"
+                                            class="text-cyan-600 hover:text-cyan-800 font-bold">
+                                            Print &rarr;
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

@@ -123,6 +123,6 @@ class RegisterClinicController extends Controller
         Auth::login($user);
         session(['current_clinic_id' => $user->clinic_id]);
 
-        return redirect()->route('dashboard')->with('status', 'Mubarak ho! Aapka clinic account kamyabi se ban gaya hai.');
+        return redirect()->route('dashboard')->with('status', 'Welcome! Your dental clinic workspace has been created successfully.');
     }
 }

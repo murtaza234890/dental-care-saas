@@ -51,7 +51,7 @@ class LoginController extends Controller
             $request->session()->regenerateToken();
 
             return redirect()->route('login')->withErrors([
-                'email' => 'Aapka account deactivate ho chuka hai. Baraye meherbani clinic admin se rabta karein.',
+                'email' => 'Your account has been deactivated. Please contact your clinic administrator.',
             ]);
         }
 
@@ -73,6 +73,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')->with('status', 'Aap successfully logout ho chuke hain.');
+        return redirect()->route('login')->with('status', 'You have been logged out successfully.');
     }
 }

@@ -70,9 +70,9 @@
     </form>
 
     <div class="mt-4 text-center text-xs text-slate-600">
-        Pehle se account mojood hai?
+        Already have a clinic account?
         <a href="{{ route('login') }}" class="font-semibold text-cyan-600 hover:text-cyan-700 hover:underline">
-            Login Karein
+            Sign in here
         </a>
     </div>
 </x-layouts.auth>

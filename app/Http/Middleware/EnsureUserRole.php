@@ -27,7 +27,7 @@ class EnsureUserRole
         }
 
         if (! in_array($userRole, $roles, true)) {
-            abort(403, 'Aapko is section tak rasai (access) hasil nahi hai. Role required: ' . implode(' ya ', $roles));
+            abort(403, 'Access denied. You do not have permission to view this section. Required role: ' . implode(' or ', $roles));
         }
 
         return $next($request);

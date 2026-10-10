@@ -73,9 +73,9 @@
     </div>
 
     <div class="mt-6 text-center text-xs text-slate-600">
-        Clinic owner nahi hain?
+        New clinic owner?
         <a href="{{ route('register.clinic') }}" class="font-semibold text-cyan-600 hover:text-cyan-700 hover:underline">
-            Naya Clinic Register Karein
+            Register Your Clinic Here
         </a>
     </div>
 

@@ -25,7 +25,7 @@ class IdentifyTenant
                 $request->session()->regenerateToken();
 
                 return redirect()->route('login')->withErrors([
-                    'email' => 'Aapka account deactivate ho chuka hai. Baraye meherbani clinic administrator se rabta karein.',
+                    'email' => 'Your account has been deactivated. Please contact your clinic administrator.',
                 ]);
             }
 

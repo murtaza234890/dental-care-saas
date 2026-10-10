@@ -5,13 +5,13 @@
             {
                 service_id: '{{ old('items.0.service_id', $selectedAppointment->service_id ?? '') }}',
                 description: '{{ old('items.0.description', $selectedAppointment->service->name ?? '') }}',
-                unit_price: {{ old('items.0.unit_price', $selectedAppointment->service->standard_fee ?? 0) }},
-                quantity: {{ old('items.0.quantity', 1) }}
+                unit_price: {{ (float) (old('items.0.unit_price', $selectedAppointment->service->standard_fee ?? 0) ?: 0) }},
+                quantity: {{ (int) (old('items.0.quantity', 1) ?: 1) }}
             }
         ],
-        discount: {{ old('discount_amount', 0) }},
+        discount: {{ (float) (old('discount_amount', 0) ?: 0) }},
         collectUpfront: {{ old('initial_payment') ? 'true' : 'false' }},
-        upfrontAmount: {{ old('initial_payment_amount', 0) }},
+        upfrontAmount: {{ (float) (old('initial_payment_amount', 0) ?: 0) }},
 
         onServiceChange(index) {
             let sId = this.items[index].service_id;

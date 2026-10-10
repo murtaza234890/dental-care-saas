@@ -126,13 +126,18 @@ class TreatmentRecordController extends Controller
             ->orderBy('name')
             ->get();
 
+        $selectedTeeth = old('tooth_numbers')
+            ? array_values(array_filter(array_map('trim', explode(',', old('tooth_numbers')))))
+            : [];
+
         return view('treatments.create', compact(
             'patients',
             'doctors',
             'services',
             'patientId',
             'appointmentId',
-            'selectedAppointment'
+            'selectedAppointment',
+            'selectedTeeth'
         ));
     }
 
@@ -284,7 +289,11 @@ class TreatmentRecordController extends Controller
             ->with('doctorProfile')
             ->get();
 
-        return view('treatments.edit', compact('treatment', 'services', 'doctors'));
+        $selectedTeeth = $treatment->tooth_numbers
+            ? array_values(array_filter(array_map('trim', explode(',', $treatment->tooth_numbers))))
+            : [];
+
+        return view('treatments.edit', compact('treatment', 'services', 'doctors', 'selectedTeeth'));
     }
 
     /**

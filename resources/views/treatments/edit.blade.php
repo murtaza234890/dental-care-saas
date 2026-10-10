@@ -1,6 +1,6 @@
 <x-layouts.app title="Edit Treatment - #{{ $treatment->id }}">
     <div class="max-w-5xl mx-auto" x-data="{
-        selectedTeeth: @json($treatment->tooth_numbers ? array_map('trim', explode(',', $treatment->tooth_numbers)) : []),
+        selectedTeeth: {{ json_encode($selectedTeeth) }},
         toothInput: '{{ old('tooth_numbers', $treatment->tooth_numbers) }}',
         toggleTooth(tooth) {
             let index = this.selectedTeeth.indexOf(tooth.toString());

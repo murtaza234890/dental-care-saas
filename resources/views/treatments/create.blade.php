@@ -1,6 +1,6 @@
 <x-layouts.app title="Record Clinical Procedure - DentalCare">
     <div class="max-w-5xl mx-auto" x-data="{
-        selectedTeeth: @json(old('tooth_numbers') ? explode(', ', old('tooth_numbers')) : []),
+        selectedTeeth: {{ json_encode($selectedTeeth) }},
         toothInput: '{{ old('tooth_numbers', '') }}',
         toggleTooth(tooth) {
             let index = this.selectedTeeth.indexOf(tooth.toString());

@@ -248,6 +248,42 @@ class TreatmentManagementTest extends TestCase
         $editResponse->assertStatus(403);
     }
 
+    public function test_dentist_can_view_create_and_edit_treatment_forms(): void
+    {
+        $clinic = Clinic::create(['name' => 'City Dental Care', 'slug' => 'city-dental']);
+        $doctor = User::create([
+            'clinic_id' => $clinic->id,
+            'name' => 'Dr. Ahmed Khan',
+            'email' => 'dr.ahmed@citydental.test',
+            'password' => bcrypt('password'),
+            'role' => 'dentist',
+            'is_active' => true,
+        ]);
+
+        $patient = Patient::create([
+            'clinic_id' => $clinic->id,
+            'name' => 'Usman Tariq',
+            'phone' => '0300-1234567',
+        ]);
+
+        $treatment = TreatmentRecord::create([
+            'clinic_id' => $clinic->id,
+            'patient_id' => $patient->id,
+            'doctor_id' => $doctor->id,
+            'tooth_numbers' => '16, 17',
+            'diagnosis' => 'Dental caries',
+            'treatment_rendered' => 'Composite restoration',
+        ]);
+
+        $createResponse = $this->actingAs($doctor)->get('/treatments/create');
+        $createResponse->assertStatus(200);
+        $createResponse->assertSee('Record Clinical Procedure');
+
+        $editResponse = $this->actingAs($doctor)->get("/treatments/{$treatment->id}/edit");
+        $editResponse->assertStatus(200);
+        $editResponse->assertSee('Edit Treatment');
+    }
+
     public function test_receptionist_sees_confidential_clinical_notes_masked_in_treatment_show(): void
     {
         $clinic = Clinic::create(['name' => 'City Dental Care', 'slug' => 'city-dental']);

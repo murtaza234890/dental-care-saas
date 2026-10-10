@@ -350,6 +350,13 @@
                     <h3 class="text-base font-extrabold text-slate-900">Clinical Treatment Dossier</h3>
                     <p class="text-xs text-slate-500">Procedures performed, diagnostic records, tooth numbers, and prescriptions.</p>
                 </div>
+                @if(!auth()->user()->isReceptionist())
+                    <a href="{{ route('treatments.create', ['patient_id' => $patient->id]) }}"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-600 text-white text-xs font-bold hover:bg-cyan-700 transition">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        Record Procedure
+                    </a>
+                @endif
             </div>
 
             <div class="space-y-4">
@@ -414,6 +421,13 @@
                                     {{ $record->clinical_notes ?: 'No additional confidential notes recorded.' }}
                                 </div>
                             @endif
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100 flex justify-end">
+                            <a href="{{ route('treatments.show', $record->id) }}"
+                                class="text-xs font-bold text-cyan-600 hover:text-cyan-800 flex items-center gap-1">
+                                View Full Clinical Dossier &rarr;
+                            </a>
                         </div>
                     </div>
                 @empty

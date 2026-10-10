@@ -236,6 +236,13 @@
                                         </form>
                                     @endif
 
+                                    @if(in_array($app->status, ['in_progress', 'completed']) && !auth()->user()->isReceptionist())
+                                        <a href="{{ route('treatments.create', ['appointment_id' => $app->id]) }}"
+                                            class="px-2 py-1 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 font-bold transition flex items-center gap-1 text-[11px]" title="Document Dental Procedure">
+                                            <span>🦷 Record</span>
+                                        </a>
+                                    @endif
+
                                     <!-- Quick Reschedule Trigger -->
                                     @if(!in_array($app->status, ['completed', 'cancelled']))
                                         <button type="button" onclick="openRescheduleModal('{{ $app->id }}', '{{ $app->appointment_date->format('Y-m-d') }}', '{{ substr($app->starts_at, 0, 5) }}', '{{ addslashes($app->patient->name) }}')"

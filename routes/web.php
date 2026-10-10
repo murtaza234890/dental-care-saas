@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     // Patient Directory & Clinical Profiles
     Route::resource('patients', \App\Http\Controllers\PatientController::class);
 
+    // Clinical Treatment Records & Dental Charting
+    Route::resource('treatments', \App\Http\Controllers\TreatmentRecordController::class);
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

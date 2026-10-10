@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/appointments/{appointment}/status', [\App\Http\Controllers\AppointmentController::class, 'updateStatus'])->name('appointments.status');
     Route::post('/appointments/{appointment}/reschedule', [\App\Http\Controllers\AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
 
+    // Patient Directory & Clinical Profiles
+    Route::resource('patients', \App\Http\Controllers\PatientController::class);
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

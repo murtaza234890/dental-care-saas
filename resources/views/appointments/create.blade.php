@@ -55,7 +55,7 @@
                             class="block w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs text-slate-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/20">
                             <option value="">-- Choose Existing Patient --</option>
                             @foreach($patients as $p)
-                                <option value="{{ $p->id }}" {{ old('patient_id') == $p->id ? 'selected' : '' }}>
+                                <option value="{{ $p->id }}" {{ old('patient_id', $defaultPatientId ?? null) == $p->id ? 'selected' : '' }}>
                                     {{ $p->name }} ({{ $p->phone }})
                                 </option>
                             @endforeach

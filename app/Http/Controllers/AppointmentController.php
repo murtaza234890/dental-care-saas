@@ -102,13 +102,15 @@ class AppointmentController extends Controller
 
         $defaultDate = $request->input('date', Carbon::today()->format('Y-m-d'));
         $defaultDoctorId = $request->input('doctor_id', $user->isDentist() ? $user->id : null);
+        $defaultPatientId = $request->input('patient_id');
 
         return view('appointments.create', compact(
             'doctors',
             'services',
             'patients',
             'defaultDate',
-            'defaultDoctorId'
+            'defaultDoctorId',
+            'defaultPatientId'
         ));
     }
 

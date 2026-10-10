@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('dental_services', function (Blueprint $table) {
+            $table->string('category')->default('General Dentistry')->after('name');
+            $table->index(['clinic_id', 'category']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('dental_services', function (Blueprint $table) {
+            $table->dropIndex(['clinic_id', 'category']);
+            $table->dropColumn('category');
+        });
+    }
+};

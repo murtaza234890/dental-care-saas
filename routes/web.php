@@ -63,6 +63,10 @@ Route::middleware('auth')->group(function () {
     // Doctor Schedules, Working Shifts & Chair Roster
     Route::resource('doctors', \App\Http\Controllers\DoctorScheduleController::class);
 
+    // Dental Services Catalog, Procedure Categories & Pricing Engine
+    Route::resource('services', \App\Http\Controllers\DentalServiceController::class);
+    Route::patch('/services/{service}/toggle', [\App\Http\Controllers\DentalServiceController::class, 'toggleStatus'])->name('services.toggle');
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

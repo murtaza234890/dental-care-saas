@@ -13,9 +13,22 @@ class DentalService extends Model
 
     protected $table = 'dental_services';
 
+    public const CATEGORIES = [
+        'Preventive',
+        'Restorative',
+        'Endodontics',
+        'Periodontics',
+        'Prosthodontics',
+        'Oral Surgery',
+        'Orthodontics',
+        'Cosmetic',
+        'General',
+    ];
+
     protected $fillable = [
         'clinic_id',
         'name',
+        'category',
         'description',
         'standard_fee',
         'estimated_duration_minutes',
@@ -36,5 +49,17 @@ class DentalService extends Model
     public function invoiceItems(): HasMany
     {
         return $this->hasMany(InvoiceItem::class, 'service_id');
+    }
+
+    public function treatmentRecords(): HasMany
+    {
+        return $this->hasMany(TreatmentRecord::class, 'service_id');
+    }
+
+    public function isReferenced(): bool
+    {
+        return $this->appointments()->exists()
+            || $this->invoiceItems()->exists()
+            || $this->treatmentRecords()->exists();
     }
 }

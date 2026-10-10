@@ -115,6 +115,7 @@ class DatabaseSeeder extends Seeder
             'consultation' => DentalService::create([
                 'clinic_id' => $clinic->id,
                 'name' => 'Dental Consultation & Examination',
+                'category' => 'Preventive',
                 'description' => 'Comprehensive oral examination, intraoral photos & treatment plan.',
                 'standard_fee' => 1500.00,
                 'estimated_duration_minutes' => 20,
@@ -123,6 +124,7 @@ class DatabaseSeeder extends Seeder
             'scaling' => DentalService::create([
                 'clinic_id' => $clinic->id,
                 'name' => 'Scaling & Polishing (Teeth Cleaning)',
+                'category' => 'Preventive',
                 'description' => 'Ultrasonic scaling followed by prophylaxis polishing.',
                 'standard_fee' => 3500.00,
                 'estimated_duration_minutes' => 30,
@@ -131,6 +133,7 @@ class DatabaseSeeder extends Seeder
             'composite' => DentalService::create([
                 'clinic_id' => $clinic->id,
                 'name' => 'Composite Tooth Restoration (Filling)',
+                'category' => 'Restorative',
                 'description' => 'Light-cured tooth-colored composite filling per surface.',
                 'standard_fee' => 4000.00,
                 'estimated_duration_minutes' => 30,
@@ -139,6 +142,7 @@ class DatabaseSeeder extends Seeder
             'rct' => DentalService::create([
                 'clinic_id' => $clinic->id,
                 'name' => 'Root Canal Treatment (Molar)',
+                'category' => 'Endodontics',
                 'description' => 'Complete bi-canal or multi-canal pulp extirpation, cleaning & obturation.',
                 'standard_fee' => 15000.00,
                 'estimated_duration_minutes' => 45,
@@ -147,8 +151,36 @@ class DatabaseSeeder extends Seeder
             'crown' => DentalService::create([
                 'clinic_id' => $clinic->id,
                 'name' => 'Zirconia Ceramic Crown',
+                'category' => 'Prosthodontics',
                 'description' => 'High-strength monolithic zirconia crown with shade matching.',
                 'standard_fee' => 22000.00,
+                'estimated_duration_minutes' => 30,
+                'is_active' => true,
+            ]),
+            'extraction' => DentalService::create([
+                'clinic_id' => $clinic->id,
+                'name' => 'Surgical Wisdom Tooth Extraction',
+                'category' => 'Oral Surgery',
+                'description' => 'Impacted third molar surgical removal with local anaesthesia and suturing.',
+                'standard_fee' => 18000.00,
+                'estimated_duration_minutes' => 45,
+                'is_active' => true,
+            ]),
+            'whitening' => DentalService::create([
+                'clinic_id' => $clinic->id,
+                'name' => 'In-Office LED Laser Teeth Whitening',
+                'category' => 'Cosmetic',
+                'description' => 'Professional chairside whitening system with gum barrier protection.',
+                'standard_fee' => 25000.00,
+                'estimated_duration_minutes' => 60,
+                'is_active' => true,
+            ]),
+            'ortho' => DentalService::create([
+                'clinic_id' => $clinic->id,
+                'name' => 'Orthodontic Braces Alignment Consultation',
+                'category' => 'Orthodontics',
+                'description' => 'Cephalometric study, digital smile scan and custom bracket planning.',
+                'standard_fee' => 3000.00,
                 'estimated_duration_minutes' => 30,
                 'is_active' => true,
             ]),

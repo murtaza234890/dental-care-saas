@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterClinicController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PublicClinicController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,14 @@ use Illuminate\Support\Facades\Route;
 // Public landing & Guest Authentication
 Route::get('/', function () {
     return redirect()->route('login');
+});
+
+// Public Tenant Clinic Websites & Booking Portals
+Route::prefix('clinic/{slug}')->name('clinic.')->group(function () {
+    Route::get('/', [PublicClinicController::class, 'show'])->name('show');
+    Route::get('/available-slots', [PublicClinicController::class, 'getAvailableSlots'])->name('slots');
+    Route::post('/book', [PublicClinicController::class, 'storeBooking'])->name('book.store');
+    Route::get('/confirmation/{appointment}', [PublicClinicController::class, 'confirmation'])->name('confirmation');
 });
 
 Route::middleware('guest')->group(function () {

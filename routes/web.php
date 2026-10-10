@@ -86,9 +86,15 @@ Route::middleware('auth')->group(function () {
         })->name('notes');
     });
 
+    // Platform Super Owner Area
     Route::middleware('role:platform_owner')->prefix('platform')->name('platform.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'index'])->name('index');
+        Route::get('/clinics', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'index'])->name('clinics.index');
+        Route::get('/clinics/{clinic}', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'show'])->name('clinics.show');
+        Route::patch('/clinics/{clinic}/status', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'updateStatus'])->name('clinics.status');
+        Route::get('/telemetry', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'telemetry'])->name('telemetry');
         Route::get('/all-clinics', function () {
-            return response()->json(['status' => 'success', 'message' => 'Platform Super Owner Area']);
+            return redirect()->route('platform.clinics.index');
         })->name('clinics');
     });
 });

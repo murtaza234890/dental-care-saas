@@ -168,5 +168,19 @@ class ComprehensiveViewRenderingTest extends TestCase
         $this->actingAs($doctor)->get('/admin/staff/create')->assertStatus(200)->assertSee('Onboard Clinic Staff Member');
         $this->actingAs($doctor)->get("/admin/staff/{$doctor->id}/edit")->assertStatus(200)->assertSee('Edit Staff Member');
         $this->actingAs($doctor)->get('/admin/settings')->assertStatus(200)->assertSee('Clinic Workspace Settings');
+
+        // 4. Platform Super Owner Pages
+        $platformOwner = User::create([
+            'name' => 'SaaS Super Owner',
+            'email' => 'superadmin@dentalcare.test',
+            'password' => bcrypt('password'),
+            'role' => 'platform_owner',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($platformOwner)->get('/dashboard')->assertStatus(200)->assertSee('SaaS Platform Overview');
+        $this->actingAs($platformOwner)->get('/platform/clinics')->assertStatus(200)->assertSee('All Clinics Registry');
+        $this->actingAs($platformOwner)->get("/platform/clinics/{$clinic->id}")->assertStatus(200)->assertSee($clinic->name);
+        $this->actingAs($platformOwner)->get('/platform/telemetry')->assertStatus(200)->assertSee('Platform Telemetry');
     }
 }

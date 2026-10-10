@@ -67,6 +67,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('services', \App\Http\Controllers\DentalServiceController::class);
     Route::patch('/services/{service}/toggle', [\App\Http\Controllers\DentalServiceController::class, 'toggleStatus'])->name('services.toggle');
 
+    // Financial Analytics, Revenue Reports & Performance Telemetry
+    Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/print', [\App\Http\Controllers\ReportController::class, 'printReport'])->name('reports.print');
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

@@ -78,6 +78,10 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('staff', \App\Http\Controllers\Admin\ClinicStaffController::class);
         Route::patch('/staff/{staff}/toggle', [\App\Http\Controllers\Admin\ClinicStaffController::class, 'toggleStatus'])->name('staff.toggle');
+
+        Route::get('/subscription', [\App\Http\Controllers\Admin\SubscriptionController::class, 'index'])->name('subscription');
+        Route::post('/subscription/change-plan', [\App\Http\Controllers\Admin\SubscriptionController::class, 'changePlan'])->name('subscription.change-plan');
+        Route::post('/subscription/renew', [\App\Http\Controllers\Admin\SubscriptionController::class, 'renew'])->name('subscription.renew');
     });
 
     Route::middleware('role:clinic_admin,dentist')->prefix('clinical')->name('clinical.')->group(function () {
@@ -93,6 +97,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/clinics/{clinic}', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'show'])->name('clinics.show');
         Route::patch('/clinics/{clinic}/status', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'updateStatus'])->name('clinics.status');
         Route::get('/telemetry', [\App\Http\Controllers\Platform\PlatformClinicController::class, 'telemetry'])->name('telemetry');
+        Route::get('/subscriptions', [\App\Http\Controllers\Platform\PlatformSubscriptionController::class, 'index'])->name('subscriptions.index');
+        Route::patch('/subscriptions/{clinic}', [\App\Http\Controllers\Platform\PlatformSubscriptionController::class, 'updateSubscription'])->name('subscriptions.update');
+        Route::post('/subscriptions/{clinic}/record-payment', [\App\Http\Controllers\Platform\PlatformSubscriptionController::class, 'recordPayment'])->name('subscriptions.record-payment');
         Route::get('/all-clinics', function () {
             return redirect()->route('platform.clinics.index');
         })->name('clinics');

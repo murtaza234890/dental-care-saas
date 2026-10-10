@@ -14,11 +14,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
             \App\Http\Middleware\IdentifyTenant::class,
+            \App\Http\Middleware\EnsureClinicSubscriptionActive::class,
         ]);
 
         $middleware->alias([
             'role' => \App\Http\Middleware\EnsureUserRole::class,
             'tenant' => \App\Http\Middleware\IdentifyTenant::class,
+            'subscription' => \App\Http\Middleware\EnsureClinicSubscriptionActive::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

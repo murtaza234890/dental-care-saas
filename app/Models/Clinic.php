@@ -85,4 +85,61 @@ class Clinic extends Model
     {
         return $this->hasMany(FollowUp::class);
     }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class)->latestOfMany();
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function platformInvoices(): HasMany
+    {
+        return $this->hasMany(PlatformInvoice::class);
+    }
+
+    public function currentPlan(): ?SubscriptionPlan
+    {
+        return $this->subscription?->plan;
+    }
+
+    public function hasActiveSubscription(): bool
+    {
+        return $this->subscription ? $this->subscription->isValid() : true;
+    }
+
+    public function canAddDoctor(): bool
+    {
+        $plan = $this->currentPlan();
+        if (! $plan) {
+            return true; // No plan restriction by default
+        }
+
+        if ($plan->hasUnlimitedDoctors()) {
+            return true;
+        }
+
+        $activeDoctorsCount = $this->doctors()->count();
+
+        return $activeDoctorsCount < $plan->max_doctors;
+    }
+
+    public function canAddStaff(): bool
+    {
+        $plan = $this->currentPlan();
+        if (! $plan) {
+            return true;
+        }
+
+        if ($plan->hasUnlimitedStaff()) {
+            return true;
+        }
+
+        $staffCount = $this->users()->count();
+
+        return $staffCount < $plan->max_staff;
+    }
 }

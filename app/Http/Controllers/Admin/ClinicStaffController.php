@@ -100,6 +100,23 @@ class ClinicStaffController extends Controller
             'slot_duration_minutes' => ['nullable', 'integer', 'min:10', 'max:180'],
         ]);
 
+        $clinic = $admin->clinic;
+        if ($clinic) {
+            if ($validated['role'] === 'dentist' && ! $clinic->canAddDoctor()) {
+                $maxDoc = $clinic->currentPlan()?->max_doctors ?? 1;
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['role' => "Your current subscription plan allows a maximum of {$maxDoc} doctor(s). Please upgrade your subscription to add more doctors."]);
+            }
+
+            if (! $clinic->canAddStaff()) {
+                $maxStaff = $clinic->currentPlan()?->max_staff ?? 2;
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['role' => "Your current subscription plan allows a maximum of {$maxStaff} staff members. Please upgrade your subscription to onboard more staff."]);
+            }
+        }
+
         $newUser = User::create([
             'clinic_id' => $clinicId,
             'name' => $validated['name'],

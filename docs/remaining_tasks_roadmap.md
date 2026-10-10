@@ -41,11 +41,11 @@ Neeche user-provided specification ke mutabiq **Complete** aur **Remaining** tas
 | **Automated Background Reminders** | Phase 9 (Step 9.2) | ⏳ **Remaining** | Cron scheduler + Queue worker to auto-dispatch 24h prior to appointment. |
 | **Official WhatsApp Business API** | Phase 9 (Step 9.3) | ⏳ **Remaining** | Meta Cloud API / Twilio gateway integration with delivery webhooks. |
 | **Platform Super Admin Portal** | Phase 10 (Step 10.1) | ✅ **Completed** | `/platform` dashboard, global clinics list, suspension toggle, telemetry. |
-| **SaaS Subscription Plans & Tiers** | Phase 10 (Step 10.2) | ⏳ **Remaining** | Starter, Professional, Premium tier limits (doctors, staff, storage). |
-| **Automated Gateway & Renewals** | Phase 10 (Step 10.3) | ⏳ **Remaining** | Stripe / LemonSqueezy / JazzCash recurring billing & grace periods. |
+| **SaaS Subscription Plans & Tiers** | Phase 10 (Step 10.2) | ✅ **Completed** | Starter, Professional, Enterprise tiers with doctor/staff/patient limits & usage meters. |
+| **Subscription Lifecycle & Invoices** | Phase 10 (Step 10.3) | ✅ **Completed** | `/admin/subscription` tier upgrades, renewals, grace periods, offline payments, `platform_invoices`. |
 | **Doctor Rostering & Timetable** | Phase 10 | ✅ **Completed** | Shifts, break hours, fees, weekly chair timetable. |
 | **Dental Services Catalog** | Phase 11 | ✅ **Completed** | Categories, duration, standard fees, safe deactivation. |
-| **Testing & Quality Assurance** | Phase 11 & 15 | ✅ **Completed** | 89 automated tests, 503 assertions, all 5 acceptance criteria passing. |
+| **Testing & Quality Assurance** | Phase 11 & 15 | ✅ **Completed** | 96 automated tests, 541 assertions, 0 failures. |
 | **Financial Analytics & Reports** | Phase 12 | ✅ **Completed** | Revenue graphs, payment breakdown, doctor productivity, printable audit. |
 | **Production Server Deployment** | Phase 12 | ⏳ **Remaining** | Cloud hosting (VPS / Forge / cPanel), SSL, Nginx, Supervisor, Live MySQL. |
 | **Clinic Staff & Workspace Admin** | Phase 13 | ✅ **Completed** | `/admin/staff`, `/admin/settings`, self-lockout prevention. |

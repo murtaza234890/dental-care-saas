@@ -117,6 +117,23 @@ class RegisterClinicController extends Controller
                 'is_active' => true,
             ]);
 
+            // 5. Assign 14-day Free Trial Subscription (Professional Plan)
+            $defaultPlan = \App\Models\SubscriptionPlan::where('slug', 'professional')->first()
+                ?? \App\Models\SubscriptionPlan::first();
+
+            if ($defaultPlan) {
+                \App\Models\Subscription::create([
+                    'clinic_id' => $clinic->id,
+                    'plan_id' => $defaultPlan->id,
+                    'status' => 'trialing',
+                    'billing_interval' => 'monthly',
+                    'trial_ends_at' => \Carbon\Carbon::now()->addDays(14),
+                    'current_period_start' => \Carbon\Carbon::now(),
+                    'current_period_end' => \Carbon\Carbon::now()->addDays(14),
+                    'payment_method' => 'trial',
+                ]);
+            }
+
             return $owner;
         });
 

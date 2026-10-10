@@ -322,5 +322,8 @@ class DatabaseSeeder extends Seeder
             'status' => 'pending',
             'staff_notes' => 'Patient needs call 1 day before due date to confirm time slot.',
         ]);
+
+        // 12. Seed SaaS Subscription Plans and demo subscriptions
+        $this->call(SubscriptionPlanSeeder::class);
     }
 }

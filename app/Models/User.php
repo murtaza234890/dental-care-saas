@@ -77,6 +77,13 @@ class User extends Authenticatable
         return $this->hasMany(Payment::class, 'received_by_user_id');
     }
 
+    public function isReferenced(): bool
+    {
+        return $this->doctorAppointments()->exists()
+            || $this->treatmentRecords()->exists()
+            || $this->paymentsReceived()->exists();
+    }
+
     // Role helper methods
     public function isPlatformOwner(): bool
     {

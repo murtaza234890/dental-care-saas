@@ -163,5 +163,10 @@ class ComprehensiveViewRenderingTest extends TestCase
 
         $this->actingAs($doctor)->get('/reports')->assertStatus(200)->assertSee('Financial Analytics');
         $this->actingAs($doctor)->get('/reports/print')->assertStatus(200)->assertSee('Executive Statement');
+
+        $this->actingAs($doctor)->get('/admin/staff')->assertStatus(200)->assertSee('Clinic Staff');
+        $this->actingAs($doctor)->get('/admin/staff/create')->assertStatus(200)->assertSee('Onboard Clinic Staff Member');
+        $this->actingAs($doctor)->get("/admin/staff/{$doctor->id}/edit")->assertStatus(200)->assertSee('Edit Staff Member');
+        $this->actingAs($doctor)->get('/admin/settings')->assertStatus(200)->assertSee('Clinic Workspace Settings');
     }
 }

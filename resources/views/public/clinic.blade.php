@@ -2,6 +2,15 @@
     <!-- Hero Section -->
     <section class="relative overflow-hidden bg-gradient-to-b from-cyan-50/60 via-white to-slate-50 pt-16 pb-24 border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
+            @if($clinic->emergency_notice)
+                <div class="mb-8 rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm font-semibold text-amber-900 flex items-start gap-3 shadow-sm">
+                    <span class="text-lg">📢</span>
+                    <div>
+                        <span class="font-extrabold block text-xs uppercase tracking-wider text-amber-800">Clinic Announcement</span>
+                        <span class="text-xs sm:text-sm text-amber-900">{{ $clinic->emergency_notice }}</span>
+                    </div>
+                </div>
+            @endif
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                 <div class="lg:col-span-7 space-y-6">
                     <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-cyan-100 text-cyan-800 border border-cyan-200">

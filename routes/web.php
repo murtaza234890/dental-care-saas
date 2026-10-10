@@ -71,11 +71,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/print', [\App\Http\Controllers\ReportController::class, 'printReport'])->name('reports.print');
 
-    // Role-protected route groups for permissions & testing
+    // Clinic Administration, Staff Roster & Workspace Settings
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/settings', function () {
-            return response()->json(['status' => 'success', 'message' => 'Clinic Admin Settings Section']);
-        })->name('settings');
+        Route::get('/settings', [\App\Http\Controllers\Admin\ClinicSettingController::class, 'edit'])->name('settings');
+        Route::put('/settings', [\App\Http\Controllers\Admin\ClinicSettingController::class, 'update'])->name('settings.update');
+
+        Route::resource('staff', \App\Http\Controllers\Admin\ClinicStaffController::class);
+        Route::patch('/staff/{staff}/toggle', [\App\Http\Controllers\Admin\ClinicStaffController::class, 'toggleStatus'])->name('staff.toggle');
     });
 
     Route::middleware('role:clinic_admin,dentist')->prefix('clinical')->name('clinical.')->group(function () {

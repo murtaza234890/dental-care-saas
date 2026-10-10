@@ -66,14 +66,15 @@ class Subscription extends Model
         return $this->status === 'suspended';
     }
 
+    public function isTrialExpired(): bool
+    {
+        return $this->status === 'trialing' && ($this->trial_ends_at !== null && $this->trial_ends_at->isPast());
+    }
+
     public function isInGracePeriod(): bool
     {
         if ($this->status === 'past_due' && $this->current_period_end) {
             return $this->current_period_end->diffInDays(now()) <= 7;
-        }
-
-        if ($this->status === 'trialing' && $this->trial_ends_at && $this->trial_ends_at->isPast()) {
-            return $this->trial_ends_at->diffInDays(now()) <= 3;
         }
 
         return false;
@@ -81,6 +82,10 @@ class Subscription extends Model
 
     public function isValid(): bool
     {
+        if ($this->isSuspended() || $this->isTrialExpired()) {
+            return false;
+        }
+
         return $this->isActive() || $this->isTrialing() || $this->isInGracePeriod();
     }
 

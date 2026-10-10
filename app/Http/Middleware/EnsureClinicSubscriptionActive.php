@@ -26,20 +26,19 @@ class EnsureClinicSubscriptionActive
             return $next($request);
         }
 
-        // Whitelisted routes: allow viewing billing & subscription page and logging out
-        if ($request->routeIs('admin.subscription*') || $request->routeIs('logout')) {
+        // Whitelisted routes: allow viewing billing & subscription page, public booking, and logging out
+        if ($request->routeIs('admin.subscription*') || $request->routeIs('logout') || $request->routeIs('clinic.*')) {
             return $next($request);
         }
 
         $subscription = $clinic->subscription;
 
-        // If subscription is suspended or past grace period
-        if ($subscription && ($subscription->isSuspended() || (! $subscription->isValid()))) {
-            // Block data mutation actions
-            if ($request->isMethod('post') || $request->isMethod('put') || $request->isMethod('patch') || $request->isMethod('delete')) {
-                return redirect()->route('admin.subscription')
-                    ->withErrors(['subscription' => 'Your subscription has expired. Patient records remain safe and read-only. Please renew your plan to restore booking and billing actions.']);
-            }
+        // If subscription is suspended or trial has expired (past 14 days)
+        if ($subscription && ($subscription->isSuspended() || (! $subscription->isValid()) || $subscription->isTrialExpired())) {
+            session()->flash('trial_expired', true);
+
+            return redirect()->route('admin.subscription')
+                ->withErrors(['subscription' => 'Your 14-day free trial has expired. Please select a plan and enter your billing card below to unlock full dashboard access.']);
         }
 
         return $next($request);

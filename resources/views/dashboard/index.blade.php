@@ -1,4 +1,25 @@
 <x-layouts.app title="Clinic Dashboard - DentalCare">
+    <!-- Early Trial Upgrade Alert Banner -->
+    @if($clinic->subscription && $clinic->subscription->isTrialing())
+        <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-cyan-600 via-teal-600 to-indigo-700 text-white shadow-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-cyan-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full text-white">14-Day Free Trial</span>
+                        <span class="text-xs text-cyan-100 font-semibold">{{ $clinic->subscription->daysLeftInTrial() }} days remaining</span>
+                    </div>
+                    <p class="text-xs text-white/90 mt-1">You are testing DentalCare with Starter limitations (1 doctor). Upgrade anytime before trial ends to unlock higher quotas & ensure zero downtime.</p>
+                </div>
+            </div>
+            <a href="{{ route('admin.subscription') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-slate-900 text-xs font-extrabold hover:bg-cyan-50 shadow-md transition flex-shrink-0">
+                ⚡ Upgrade Plan Now
+            </a>
+        </div>
+    @endif
+
     <!-- Welcome Header -->
     <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>

@@ -142,4 +142,36 @@ class Clinic extends Model
 
         return $staffCount < $plan->max_staff;
     }
+
+    public function canAddPatient(): bool
+    {
+        $plan = $this->currentPlan();
+        if (! $plan) {
+            return true;
+        }
+
+        if ($plan->hasUnlimitedPatients()) {
+            return true;
+        }
+
+        $patientsCount = $this->patients()->count();
+
+        return $patientsCount < $plan->max_patients;
+    }
+
+    public function hasFeature(string $feature): bool
+    {
+        $plan = $this->currentPlan();
+        if (! $plan || empty($plan->features)) {
+            return true;
+        }
+
+        foreach ($plan->features as $f) {
+            if (stripos($f, $feature) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

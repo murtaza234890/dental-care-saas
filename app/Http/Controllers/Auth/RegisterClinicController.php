@@ -117,8 +117,8 @@ class RegisterClinicController extends Controller
                 'is_active' => true,
             ]);
 
-            // 5. Assign 14-day Free Trial Subscription (Professional Plan)
-            $defaultPlan = \App\Models\SubscriptionPlan::where('slug', 'professional')->first()
+            // 5. Assign 14-day Free Trial Subscription (Starter Plan)
+            $defaultPlan = \App\Models\SubscriptionPlan::where('slug', 'starter')->first()
                 ?? \App\Models\SubscriptionPlan::first();
 
             if ($defaultPlan) {

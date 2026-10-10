@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/subscription', [\App\Http\Controllers\Admin\SubscriptionController::class, 'index'])->name('subscription');
         Route::post('/subscription/change-plan', [\App\Http\Controllers\Admin\SubscriptionController::class, 'changePlan'])->name('subscription.change-plan');
         Route::post('/subscription/renew', [\App\Http\Controllers\Admin\SubscriptionController::class, 'renew'])->name('subscription.renew');
+        Route::post('/subscription/checkout', [\App\Http\Controllers\Admin\SubscriptionController::class, 'checkout'])->name('subscription.checkout');
     });
 
     Route::middleware('role:clinic_admin,dentist')->prefix('clinical')->name('clinical.')->group(function () {

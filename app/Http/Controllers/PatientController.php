@@ -68,8 +68,15 @@ class PatientController extends Controller
     /**
      * Show form to create a new patient file.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        $clinic = Auth::user()->clinic;
+        if ($clinic && ! $clinic->canAddPatient()) {
+            $max = $clinic->currentPlan()?->max_patients ?? 200;
+            return redirect()->route('admin.subscription')
+                ->withErrors(['subscription' => "Patient quota limit reached ({$max} patients for your plan). Please upgrade your subscription to register more patients."]);
+        }
+
         return view('patients.create');
     }
 
@@ -79,6 +86,14 @@ class PatientController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $user = Auth::user();
+        $clinic = $user->clinic;
+
+        if ($clinic && ! $clinic->canAddPatient()) {
+            $max = $clinic->currentPlan()?->max_patients ?? 200;
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['name' => "Patient quota limit reached ({$max} patients for your plan). Please upgrade your subscription to register more patients."]);
+        }
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],

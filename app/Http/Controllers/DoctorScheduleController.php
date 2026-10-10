@@ -47,12 +47,19 @@ class DoctorScheduleController extends Controller
     /**
      * Show form to onboard a new dentist with schedule.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
         $user = Auth::user();
 
         if (! $user->isClinicAdmin()) {
             abort(403, 'Unauthorized. Only Clinic Administrators can onboard new doctors.');
+        }
+
+        $clinic = $user->clinic;
+        if ($clinic && ! $clinic->canAddDoctor()) {
+            $maxDoc = $clinic->currentPlan()?->max_doctors ?? 1;
+            return redirect()->route('admin.subscription')
+                ->withErrors(['subscription' => "Your current subscription plan allows a maximum of {$maxDoc} doctor(s). Please upgrade your subscription to add more doctors."]);
         }
 
         $daysOfWeek = [
@@ -77,6 +84,14 @@ class DoctorScheduleController extends Controller
 
         if (! $user->isClinicAdmin()) {
             abort(403, 'Unauthorized. Only Clinic Administrators can onboard new doctors.');
+        }
+
+        $clinic = $user->clinic;
+        if ($clinic && ! $clinic->canAddDoctor()) {
+            $maxDoc = $clinic->currentPlan()?->max_doctors ?? 1;
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['name' => "Your current subscription plan allows a maximum of {$maxDoc} doctor(s). Please upgrade your subscription to add more doctors."]);
         }
 
         $validated = $request->validate([

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Clinic;
+use App\Models\Patient;
 use App\Models\PlatformInvoice;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
@@ -119,7 +120,7 @@ class SaaSSubscriptionManagementTest extends TestCase
         $subscription = $newClinic->subscription;
         $this->assertNotNull($subscription);
         $this->assertEquals('trialing', $subscription->status);
-        $this->assertEquals($this->proPlan->id, $subscription->plan_id);
+        $this->assertEquals($this->starterPlan->id, $subscription->plan_id);
         $this->assertTrue($subscription->trial_ends_at->isFuture());
     }
 
@@ -302,5 +303,150 @@ class SaaSSubscriptionManagementTest extends TestCase
 
         // Confirms no patient was added
         $this->assertDatabaseMissing('patients', ['name' => 'Blocked Patient']);
+    }
+
+    public function test_expired_14_day_trial_locks_dashboard_and_redirects_to_billing(): void
+    {
+        Subscription::create([
+            'clinic_id' => $this->clinic->id,
+            'plan_id' => $this->starterPlan->id,
+            'status' => 'trialing',
+            'billing_interval' => 'monthly',
+            'trial_ends_at' => now()->subHours(2),
+        ]);
+
+        $this->actingAs($this->owner);
+
+        // Accessing dashboard when trial is expired should redirect to subscription billing page
+        $res = $this->get('/dashboard');
+        $res->assertRedirect(route('admin.subscription'));
+        $res->assertSessionHasErrors('subscription');
+        $this->assertTrue(session('trial_expired') === true);
+    }
+
+    public function test_credit_card_checkout_activates_subscription_and_unlocks_dashboard(): void
+    {
+        Subscription::create([
+            'clinic_id' => $this->clinic->id,
+            'plan_id' => $this->starterPlan->id,
+            'status' => 'trialing',
+            'billing_interval' => 'monthly',
+            'trial_ends_at' => now()->subDay(),
+        ]);
+
+        $this->actingAs($this->owner);
+
+        // Dashboard is initially blocked
+        $this->get('/dashboard')->assertRedirect(route('admin.subscription'));
+
+        // Customer fills credit card billing modal and upgrades to Professional Plan
+        $checkoutPayload = [
+            'plan_id' => $this->proPlan->id,
+            'billing_interval' => 'monthly',
+            'cardholder_name' => 'Dr. Muhammad Usman',
+            'card_number' => '4242 4242 4242 4242',
+            'card_expiry' => '08/29',
+            'card_cvc' => '888',
+            'billing_country' => 'Pakistan',
+            'billing_zip' => '54000',
+        ];
+
+        $res = $this->post('/admin/subscription/checkout', $checkoutPayload);
+        $res->assertRedirect(route('dashboard'));
+        $res->assertSessionHas('status');
+
+        $sub = $this->clinic->fresh()->subscription;
+        $this->assertEquals('active', $sub->status);
+        $this->assertEquals($this->proPlan->id, $sub->plan_id);
+        $this->assertNull($sub->trial_ends_at);
+        $this->assertStringContainsString('Visa •••• 4242', $sub->payment_method);
+
+        // Platform SaaS invoice created with paid status
+        $this->assertDatabaseHas('platform_invoices', [
+            'clinic_id' => $this->clinic->id,
+            'subscription_id' => $sub->id,
+            'amount' => $this->proPlan->price_monthly,
+            'status' => 'paid',
+        ]);
+
+        // Dashboard is now fully accessible
+        $dashboardRes = $this->get('/dashboard');
+        $dashboardRes->assertOk();
+    }
+
+    public function test_doctor_schedule_controller_blocks_adding_doctor_beyond_plan_limit(): void
+    {
+        Subscription::create([
+            'clinic_id' => $this->clinic->id,
+            'plan_id' => $this->starterPlan->id,
+            'status' => 'active',
+            'billing_interval' => 'monthly',
+            'current_period_start' => now(),
+            'current_period_end' => now()->addMonth(),
+        ]);
+
+        // Create 1 dentist for the clinic. Starter plan max_doctors is 1.
+        User::create([
+            'clinic_id' => $this->clinic->id,
+            'name' => 'Dr. First Dentist',
+            'email' => 'first.dentist@test.com',
+            'password' => bcrypt('secret123'),
+            'role' => 'dentist',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($this->owner);
+
+        // Visiting GET /doctors/create redirects with plan limit message
+        $getRes = $this->get('/doctors/create');
+        $getRes->assertRedirect(route('admin.subscription'));
+        $getRes->assertSessionHasErrors('subscription');
+
+        // Attempting to post a new doctor is blocked
+        $postRes = $this->post('/doctors', [
+            'name' => 'Dr. Extra Dentist',
+            'email' => 'extra.dentist@test.com',
+            'phone' => '0300-9998877',
+            'role' => 'dentist',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123',
+        ]);
+
+        $postRes->assertSessionHasErrors('name');
+        $this->assertDatabaseMissing('users', ['email' => 'extra.dentist@test.com']);
+    }
+
+    public function test_patient_quota_limit_blocks_new_patient_when_cap_reached(): void
+    {
+        $this->starterPlan->update(['max_patients' => 2]);
+
+        Subscription::create([
+            'clinic_id' => $this->clinic->id,
+            'plan_id' => $this->starterPlan->id,
+            'status' => 'active',
+            'billing_interval' => 'monthly',
+            'current_period_start' => now(),
+            'current_period_end' => now()->addMonth(),
+        ]);
+
+        // Create 2 patients to reach the quota cap
+        Patient::create(['clinic_id' => $this->clinic->id, 'name' => 'Patient One', 'phone' => '0300-1111111']);
+        Patient::create(['clinic_id' => $this->clinic->id, 'name' => 'Patient Two', 'phone' => '0300-2222222']);
+
+        $this->actingAs($this->owner);
+
+        // GET /patients/create redirects to billing
+        $getRes = $this->get('/patients/create');
+        $getRes->assertRedirect(route('admin.subscription'));
+        $getRes->assertSessionHasErrors('subscription');
+
+        // POST /patients is blocked
+        $postRes = $this->post('/patients', [
+            'name' => 'Third Patient Cap Exceeded',
+            'phone' => '0300-5551234',
+        ]);
+
+        $postRes->assertSessionHasErrors('name');
+        $this->assertDatabaseMissing('patients', ['name' => 'Third Patient Cap Exceeded']);
     }
 }

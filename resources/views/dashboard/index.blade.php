@@ -203,4 +203,56 @@
             </div>
         </div>
     </div>
+
+    <!-- Today's Recall & Follow-Up Tasks Widget -->
+    @if(isset($todayFollowUps) && $todayFollowUps->count() > 0)
+        <div class="mt-8 bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <span>Clinical Recalls & Calls Due Today</span>
+                        <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                            {{ $todayFollowUps->count() }} Due
+                        </span>
+                    </h3>
+                    <p class="text-xs text-slate-500">Post-op checks, crown fittings, and dental recall reminders</p>
+                </div>
+                <a href="{{ route('follow-ups.index', ['filter' => 'today']) }}" class="text-xs font-bold text-cyan-600 hover:text-cyan-700 transition">
+                    View All Recall Queue &rarr;
+                </a>
+            </div>
+
+            <div class="divide-y divide-slate-100">
+                @foreach($todayFollowUps as $tfu)
+                    <div class="p-4 flex items-center justify-between hover:bg-slate-50/60 transition">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-xs">
+                                📞
+                            </div>
+                            <div>
+                                <a href="{{ route('patients.show', $tfu->patient_id) }}" class="text-xs font-bold text-slate-900 hover:text-cyan-600 transition">
+                                    {{ $tfu->patient->name }}
+                                </a>
+                                <span class="text-[11px] text-slate-400 font-mono ml-2">{{ $tfu->patient->phone }}</span>
+                                <span class="block text-xs text-slate-600">{{ $tfu->reason }}</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <form action="{{ route('follow-ups.status', $tfu->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                <input type="hidden" name="status" value="contacted">
+                                <button type="submit" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 text-blue-700 hover:bg-blue-100 transition border border-blue-200">
+                                    Mark Called
+                                </button>
+                            </form>
+                            <a href="{{ route('appointments.create', ['patient_id' => $tfu->patient_id]) }}" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition border border-emerald-200">
+                                Book Appt
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
 </x-layouts.app>

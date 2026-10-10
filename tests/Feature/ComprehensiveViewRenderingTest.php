@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Appointment;
 use App\Models\Clinic;
 use App\Models\DentalService;
+use App\Models\FollowUp;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Patient;
@@ -133,9 +134,22 @@ class ComprehensiveViewRenderingTest extends TestCase
         $this->actingAs($doctor)->get("/treatments/{$treatment->id}")->assertStatus(200)->assertSee('Clinical Procedure Dossier');
         $this->actingAs($doctor)->get("/treatments/{$treatment->id}/edit")->assertStatus(200)->assertSee('Edit Treatment');
 
+        $followUp = FollowUp::create([
+            'clinic_id' => $clinic->id,
+            'patient_id' => $patient->id,
+            'treatment_record_id' => $treatment->id,
+            'due_date' => Carbon::tomorrow(),
+            'reason' => 'Post-op checkup',
+            'status' => 'pending',
+        ]);
+
         $this->actingAs($doctor)->get('/invoices')->assertStatus(200)->assertSee('Billing and Financial Ledger');
         $this->actingAs($doctor)->get('/invoices/create')->assertStatus(200)->assertSee('Generate Patient Invoice');
         $this->actingAs($doctor)->get("/invoices/{$invoice->id}")->assertStatus(200)->assertSee('INV-202610-0099');
         $this->actingAs($doctor)->get("/payments/{$payment->id}/receipt")->assertStatus(200)->assertSee('Print Official Receipt');
+
+        $this->actingAs($doctor)->get('/follow-ups')->assertStatus(200)->assertSee('Clinical Recall Queue');
+        $this->actingAs($doctor)->get('/follow-ups/create')->assertStatus(200)->assertSee('Schedule Clinical Recall Task');
+        $this->actingAs($doctor)->get("/follow-ups/{$followUp->id}/edit")->assertStatus(200)->assertSee('Edit Follow-Up Recall Task');
     }
 }

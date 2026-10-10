@@ -600,6 +600,10 @@
                     <h3 class="text-base font-extrabold text-slate-900">Follow-Up & Clinical Recall Tasks</h3>
                     <p class="text-xs text-slate-500">Scheduled recalls, post-treatment reviews, and periodic check-up reminders.</p>
                 </div>
+                <a href="{{ route('follow-ups.create', ['patient_id' => $patient->id]) }}"
+                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-600 text-white text-xs font-bold shadow-md shadow-cyan-600/20 hover:bg-cyan-700 transition">
+                    + Schedule Recall
+                </a>
             </div>
 
             <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden">
@@ -611,6 +615,7 @@
                             <th class="px-6 py-4">Status</th>
                             <th class="px-6 py-4">Last Contacted</th>
                             <th class="px-6 py-4">Staff Notes</th>
+                            <th class="px-6 py-4 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -631,13 +636,17 @@
                                     {{ $fu->reason }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($fu->status === 'completed')
+                                    @if($fu->status === 'completed' || $fu->status === 'booked')
                                         <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            Completed
+                                            {{ ucfirst($fu->status) }}
                                         </span>
                                     @elseif($fu->status === 'contacted')
                                         <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-blue-50 text-blue-700 border border-blue-200">
                                             Contacted
+                                        </span>
+                                    @elseif($fu->status === 'cancelled')
+                                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-slate-100 text-slate-600 border border-slate-200">
+                                            Dismissed
                                         </span>
                                     @else
                                         <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase bg-amber-50 text-amber-700 border border-amber-200">
@@ -651,10 +660,15 @@
                                 <td class="px-6 py-4 text-slate-600 max-w-[240px]">
                                     {{ $fu->staff_notes ?: '—' }}
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right">
+                                    <a href="{{ route('follow-ups.edit', $fu->id) }}" class="p-1.5 text-slate-400 hover:text-cyan-600 transition">
+                                        Edit
+                                    </a>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-10 text-center text-xs text-slate-400">
+                                <td colspan="6" class="px-6 py-10 text-center text-xs text-slate-400">
                                     No active recall or follow-up tasks recorded for this patient.
                                 </td>
                             </tr>

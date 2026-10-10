@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/invoices/{invoice}/payments', [\App\Http\Controllers\PaymentController::class, 'store'])->name('invoices.payments.store');
     Route::get('/payments/{payment}/receipt', [\App\Http\Controllers\PaymentController::class, 'receipt'])->name('payments.receipt');
 
+    // Patient Follow-Ups & Clinical Recall Queue
+    Route::resource('follow-ups', \App\Http\Controllers\FollowUpController::class);
+    Route::patch('/follow-ups/{followUp}/status', [\App\Http\Controllers\FollowUpController::class, 'updateStatus'])->name('follow-ups.status');
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

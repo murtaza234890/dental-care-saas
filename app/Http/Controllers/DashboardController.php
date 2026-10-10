@@ -62,6 +62,13 @@ class DashboardController extends Controller
             ->whereDate('due_date', '<=', Carbon::today()->addDays(7))
             ->count();
 
+        $todayFollowUps = FollowUp::with('patient')
+            ->whereDate('due_date', '<=', Carbon::today())
+            ->whereIn('status', ['pending', 'contacted'])
+            ->orderBy('due_date')
+            ->take(5)
+            ->get();
+
         $recentTreatments = [];
         if (! $user->isReceptionist()) {
             $recentTreatments = TreatmentRecord::with(['patient', 'doctor', 'service'])
@@ -78,6 +85,7 @@ class DashboardController extends Controller
             'todayCollections',
             'totalOutstandingBalance',
             'pendingFollowUpsCount',
+            'todayFollowUps',
             'recentTreatments'
         ));
     }

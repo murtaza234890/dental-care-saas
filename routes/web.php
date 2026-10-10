@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Public landing & Guest Authentication
+// Public SaaS Marketing Landing Page
 Route::get('/', function () {
-    return redirect()->route('login');
-});
+    return view('landing');
+})->name('home');
 
 // Public Tenant Clinic Websites & Booking Portals
 Route::prefix('clinic/{slug}')->name('clinic.')->group(function () {

@@ -151,5 +151,10 @@ class ComprehensiveViewRenderingTest extends TestCase
         $this->actingAs($doctor)->get('/follow-ups')->assertStatus(200)->assertSee('Clinical Recall Queue');
         $this->actingAs($doctor)->get('/follow-ups/create')->assertStatus(200)->assertSee('Schedule Clinical Recall Task');
         $this->actingAs($doctor)->get("/follow-ups/{$followUp->id}/edit")->assertStatus(200)->assertSee('Edit Follow-Up Recall Task');
+
+        $this->actingAs($doctor)->get('/doctors')->assertStatus(200)->assertSee('Doctor Schedules');
+        $this->actingAs($doctor)->get('/doctors/create')->assertStatus(200)->assertSee('Onboard New Dental Surgeon');
+        $this->actingAs($doctor)->get("/doctors/{$doctor->id}")->assertStatus(200)->assertSee($doctor->name);
+        $this->actingAs($doctor)->get("/doctors/{$doctor->id}/edit")->assertStatus(200)->assertSee('Edit Schedule');
     }
 }

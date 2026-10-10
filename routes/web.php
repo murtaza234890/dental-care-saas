@@ -60,6 +60,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('follow-ups', \App\Http\Controllers\FollowUpController::class);
     Route::patch('/follow-ups/{followUp}/status', [\App\Http\Controllers\FollowUpController::class, 'updateStatus'])->name('follow-ups.status');
 
+    // Doctor Schedules, Working Shifts & Chair Roster
+    Route::resource('doctors', \App\Http\Controllers\DoctorScheduleController::class);
+
     // Role-protected route groups for permissions & testing
     Route::middleware('role:clinic_admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', function () {

@@ -1,5 +1,14 @@
 <x-layouts.app title="Patient Dossier - {{ $patient->name }}">
-    <div x-data="{ activeTab: 'overview' }" class="space-y-6">
+    <div x-data="{ 
+        activeTab: '{{ request('tab', 'overview') }}', 
+        showUploadForm: false, 
+        filterDocType: 'all',
+        lightboxOpen: false, 
+        lightboxUrl: '', 
+        lightboxTitle: '', 
+        lightboxMeta: '',
+        lightboxDownloadUrl: ''
+    }" class="space-y-6">
         <!-- Top Bar & Breadcrumb -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -168,6 +177,14 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Follow-Ups & Recalls
                     <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $patient->followUps->count() }}</span>
+                </button>
+
+                <button type="button" @click="activeTab = 'documents'"
+                    :class="activeTab === 'documents' ? 'border-cyan-600 text-cyan-700 font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 font-medium'"
+                    class="whitespace-nowrap py-3 px-3 border-b-2 text-xs transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Documents & X-Rays
+                    <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $patient->documents->count() }}</span>
                 </button>
             </nav>
         </div>
@@ -675,6 +692,294 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Tab 6: Clinical Documents & Dental X-Rays -->
+        <div x-show="activeTab === 'documents'" x-cloak class="space-y-6">
+            <!-- Header & Action Toolbar -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span>Clinical Documents & Dental Radiographs</span>
+                        <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-cyan-50 text-cyan-700 border border-cyan-200">
+                            {{ $patient->documents->count() }} Files
+                        </span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-1">
+                        Securely store OPGs, intraoral periapical X-rays, pre/post photographs, lab reports, and signed medical consents.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button type="button" @click="showUploadForm = !showUploadForm"
+                        class="inline-flex items-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition active:scale-[0.99]">
+                        <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span x-text="showUploadForm ? 'Close Upload Form' : 'Upload Document / X-Ray'">Upload Document / X-Ray</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Upload Form Card (Collapsible) -->
+            <div x-show="showUploadForm" x-transition.duration.300ms class="bg-white rounded-3xl p-6 sm:p-8 border border-cyan-200/80 shadow-md">
+                <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900">Upload New Clinical Media / File</h4>
+                    </div>
+                    <button type="button" @click="showUploadForm = false" class="text-xs text-slate-400 hover:text-slate-600 transition">
+                        Cancel
+                    </button>
+                </div>
+
+                <form action="{{ route('patients.documents.store', $patient->id) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                    @csrf
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Document Title -->
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                Document Title <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" name="title" required
+                                placeholder="e.g. Pre-Op Bitewing X-Ray or Full OPG Radiograph"
+                                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/20">
+                        </div>
+
+                        <!-- Document Category -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                Category <span class="text-rose-500">*</span>
+                            </label>
+                            <select name="document_type" required
+                                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/20">
+                                <option value="xray">Dental X-Ray (Radiograph)</option>
+                                <option value="photo">Clinical Photograph (Pre/Post)</option>
+                                <option value="lab_report">Dental Lab Report / Biopsy</option>
+                                <option value="prescription">Prescription Slip Scan</option>
+                                <option value="other">General Medical File</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Associated Tooth Number (Optional) -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                Tooth # <span class="text-slate-400 font-normal">(Optional)</span>
+                            </label>
+                            <input type="text" name="tooth_number" placeholder="e.g. 16, 24, 36"
+                                class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs text-slate-900 font-mono placeholder-slate-400 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/20">
+                        </div>
+
+                        <!-- File Input -->
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                                Choose File (JPEG, PNG, WEBP, PDF up to 15MB) <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="file" name="file" required accept=".jpg,.jpeg,.png,.webp,.pdf"
+                                class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-50 file:text-cyan-700 hover:file:bg-cyan-100 border border-slate-300 rounded-xl cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Clinical Findings / Notes -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Clinical Observations / Radiographic Findings <span class="text-slate-400 font-normal">(Optional)</span>
+                        </label>
+                        <textarea name="notes" rows="2"
+                            placeholder="e.g. Radiolucency observed around apical region of mesial root. No alveolar bone resorption noted."
+                            class="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/20"></textarea>
+                    </div>
+
+                    <!-- Submit Actions -->
+                    <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                        <button type="button" @click="showUploadForm = false"
+                            class="px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-cyan-600/25 hover:from-cyan-700 hover:to-teal-700 transition active:scale-[0.99]">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                            Upload to Dossier
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Category Filter Pills -->
+            @if($patient->documents->count() > 0)
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" @click="filterDocType = 'all'"
+                        :class="filterDocType === 'all' ? 'bg-slate-900 text-white font-bold' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium'"
+                        class="px-3 py-1.5 rounded-xl text-xs transition">
+                        All Files ({{ $patient->documents->count() }})
+                    </button>
+                    <button type="button" @click="filterDocType = 'xray'"
+                        :class="filterDocType === 'xray' ? 'bg-slate-900 text-white font-bold' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium'"
+                        class="px-3 py-1.5 rounded-xl text-xs transition">
+                        X-Rays ({{ $patient->documents->where('document_type', 'xray')->count() }})
+                    </button>
+                    <button type="button" @click="filterDocType = 'photo'"
+                        :class="filterDocType === 'photo' ? 'bg-slate-900 text-white font-bold' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium'"
+                        class="px-3 py-1.5 rounded-xl text-xs transition">
+                        Photos ({{ $patient->documents->where('document_type', 'photo')->count() }})
+                    </button>
+                    <button type="button" @click="filterDocType = 'lab_report'"
+                        :class="filterDocType === 'lab_report' ? 'bg-slate-900 text-white font-bold' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium'"
+                        class="px-3 py-1.5 rounded-xl text-xs transition">
+                        Lab Reports ({{ $patient->documents->where('document_type', 'lab_report')->count() }})
+                    </button>
+                    <button type="button" @click="filterDocType = 'prescription'"
+                        :class="filterDocType === 'prescription' ? 'bg-slate-900 text-white font-bold' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium'"
+                        class="px-3 py-1.5 rounded-xl text-xs transition">
+                        Prescription Scans ({{ $patient->documents->where('document_type', 'prescription')->count() }})
+                    </button>
+                </div>
+            @endif
+
+            <!-- Documents Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($patient->documents as $doc)
+                    <div x-show="filterDocType === 'all' || filterDocType === '{{ $doc->document_type }}'"
+                        class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md hover:border-cyan-300 transition group">
+                        
+                        <div>
+                            <!-- Visual Preview Area -->
+                            <div class="relative bg-slate-900 aspect-video overflow-hidden flex items-center justify-center cursor-pointer"
+                                @click="lightboxOpen = true; lightboxUrl = '{{ route('patients.documents.view', ['patient' => $patient->id, 'document' => $doc->id]) }}'; lightboxTitle = '{{ addslashes($doc->title) }}'; lightboxMeta = '{{ $doc->type_label }} &bull; {{ $doc->created_at->format('M d, Y') }} &bull; {{ $doc->formatted_file_size }}'; lightboxDownloadUrl = '{{ route('patients.documents.download', ['patient' => $patient->id, 'document' => $doc->id]) }}'">
+                                
+                                @if($doc->is_image)
+                                    <img src="{{ route('patients.documents.view', ['patient' => $patient->id, 'document' => $doc->id]) }}"
+                                        alt="{{ $doc->title }}"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                    <div class="absolute inset-0 bg-slate-950/20 group-hover:bg-slate-950/40 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                        <span class="px-3 py-1.5 rounded-xl bg-white/90 text-slate-900 text-xs font-bold shadow-md flex items-center gap-1.5">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                                            Inspect Radiograph
+                                        </span>
+                                    </div>
+                                @elseif($doc->is_pdf)
+                                    <div class="flex flex-col items-center justify-center p-6 text-rose-400">
+                                        <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        <span class="text-xs font-bold text-slate-200">PDF Document</span>
+                                    </div>
+                                @else
+                                    <div class="flex flex-col items-center justify-center p-6 text-cyan-400">
+                                        <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                        <span class="text-xs font-bold text-slate-200">Clinical File</span>
+                                    </div>
+                                @endif
+
+                                <!-- Category Pill Badge -->
+                                <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-slate-900/80 backdrop-blur-md text-white border border-white/10">
+                                    {{ $doc->type_label }}
+                                </span>
+
+                                <!-- Tooth # Badge (if present) -->
+                                @if($doc->tooth_number)
+                                    <span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-cyan-600/90 backdrop-blur-md text-white border border-white/10">
+                                        Tooth #{{ $doc->tooth_number }}
+                                    </span>
+                                @endif
+                            </div>
+
+                            <!-- Document Metadata Area -->
+                            <div class="p-5">
+                                <h4 class="font-bold text-slate-900 text-sm truncate" title="{{ $doc->title }}">
+                                    {{ $doc->title }}
+                                </h4>
+
+                                @if($doc->notes)
+                                    <p class="text-xs text-slate-600 mt-1.5 line-clamp-2 leading-relaxed">
+                                        {{ $doc->notes }}
+                                    </p>
+                                @endif
+
+                                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                                    <span class="font-mono">{{ $doc->formatted_file_size }}</span>
+                                    <span>{{ $doc->created_at->format('M d, Y') }}</span>
+                                </div>
+                                <div class="text-[10px] text-slate-400 mt-1 truncate">
+                                    Uploaded by: <strong class="text-slate-600">{{ $doc->uploadedBy->name ?? 'Clinical Staff' }}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Action Footer -->
+                        <div class="px-5 py-3.5 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <a href="{{ route('patients.documents.view', ['patient' => $patient->id, 'document' => $doc->id]) }}" target="_blank"
+                                    class="p-1.5 rounded-lg text-slate-600 hover:text-cyan-700 hover:bg-slate-200/60 transition" title="Open in New Tab">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                </a>
+
+                                <a href="{{ route('patients.documents.download', ['patient' => $patient->id, 'document' => $doc->id]) }}"
+                                    class="p-1.5 rounded-lg text-slate-600 hover:text-cyan-700 hover:bg-slate-200/60 transition" title="Download Original File">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                </a>
+                            </div>
+
+                            <form action="{{ route('patients.documents.destroy', ['patient' => $patient->id, 'document' => $doc->id]) }}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to permanently delete this clinical document?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Delete Document">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full bg-white rounded-3xl p-12 text-center border border-dashed border-slate-300">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900">No Clinical Documents or Radiographs</h4>
+                        <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-5">
+                            Upload dental X-rays, treatment photographs, lab findings, or medical records for {{ $patient->name }}.
+                        </p>
+                        <button type="button" @click="showUploadForm = true"
+                            class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-cyan-600/25 hover:from-cyan-700 hover:to-teal-700 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            Upload First Document
+                        </button>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Radiograph Lightbox Modal -->
+        <div x-show="lightboxOpen" x-cloak
+            class="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4"
+            @keydown.escape.window="lightboxOpen = false">
+            <div class="relative bg-slate-900 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col border border-slate-700 shadow-2xl"
+                @click.away="lightboxOpen = false">
+                <!-- Lightbox Header -->
+                <div class="p-4 bg-slate-950/60 border-b border-slate-800 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-white" x-text="lightboxTitle"></h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5" x-text="lightboxMeta"></p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <a :href="lightboxDownloadUrl"
+                            class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                            Download
+                        </a>
+                        <button type="button" @click="lightboxOpen = false"
+                            class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lightbox Viewer Area -->
+                <div class="flex-1 p-4 bg-black flex items-center justify-center overflow-auto min-h-[300px]">
+                    <img :src="lightboxUrl" :alt="lightboxTitle" class="max-h-[70vh] max-w-full object-contain rounded-lg">
+                </div>
             </div>
         </div>
     </div>

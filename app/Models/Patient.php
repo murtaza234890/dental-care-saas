@@ -52,6 +52,11 @@ class Patient extends Model
         return $this->hasMany(FollowUp::class);
     }
 
+    public function documents(): HasMany
+    {
+        return $this->hasMany(PatientDocument::class);
+    }
+
     /**
      * Outstanding financial balance for the patient.
      */

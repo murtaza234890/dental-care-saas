@@ -47,6 +47,10 @@ Route::middleware('auth')->group(function () {
 
     // Patient Directory & Clinical Profiles
     Route::resource('patients', \App\Http\Controllers\PatientController::class);
+    Route::post('/patients/{patient}/documents', [\App\Http\Controllers\PatientDocumentController::class, 'store'])->name('patients.documents.store');
+    Route::get('/patients/{patient}/documents/{document}/view', [\App\Http\Controllers\PatientDocumentController::class, 'view'])->name('patients.documents.view');
+    Route::get('/patients/{patient}/documents/{document}/download', [\App\Http\Controllers\PatientDocumentController::class, 'download'])->name('patients.documents.download');
+    Route::delete('/patients/{patient}/documents/{document}', [\App\Http\Controllers\PatientDocumentController::class, 'destroy'])->name('patients.documents.destroy');
 
     // Clinical Treatment Records & Dental Charting
     Route::resource('treatments', \App\Http\Controllers\TreatmentRecordController::class);

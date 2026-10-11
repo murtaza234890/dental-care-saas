@@ -127,6 +127,7 @@ class PatientController extends Controller
             'invoices' => fn ($q) => $q->with('items')->latest(),
             'payments' => fn ($q) => $q->with('receivedBy')->latest(),
             'followUps' => fn ($q) => $q->latest(),
+            'documents' => fn ($q) => $q->with('uploadedBy')->latest(),
         ]);
 
         // Eager load treatment records (with clinical notes restriction for receptionist)

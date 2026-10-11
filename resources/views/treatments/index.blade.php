@@ -2,54 +2,57 @@
     <!-- Header -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">
-                Clinical Treatments and Odontogram 🦷
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                Clinical Treatments and Odontogram
             </h2>
-            <p class="mt-1 text-sm text-slate-500">
-                Manage clinical records, dental charting, diagnoses, and medical prescriptions.
+            <p class="mt-1 text-xs sm:text-sm text-slate-500">
+                Clinical procedures, FDI odontogram charting, diagnoses, and prescription slips.
             </p>
         </div>
 
         @if(!auth()->user()->isReceptionist())
             <div>
                 <a href="{{ route('treatments.create') }}"
-                    class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-cyan-600/25 hover:from-cyan-700 hover:to-teal-700 transition active:scale-[0.99]">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Record New Procedure
+                    class="inline-flex items-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition active:scale-[0.99]">
+                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Record New Procedure</span>
                 </a>
             </div>
         @endif
     </div>
 
     <!-- Quick Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 mb-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Total Treatments</span>
-                <span class="text-2xl font-extrabold text-slate-900 mt-1 block">{{ $totalTreatments }}</span>
+                <span class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1 block">{{ $totalTreatments }}</span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Recorded procedures</span>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold">
-                🦷
-            </div>
-        </div>
-
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-            <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-teal-600 block">Unique Patients Treated</span>
-                <span class="text-2xl font-extrabold text-teal-700 mt-1 block">{{ $uniquePatientsTreated }}</span>
-            </div>
-            <div class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold">
-                👥
+            <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
             </div>
         </div>
 
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-indigo-500 block">Procedures This Month</span>
-                <span class="text-2xl font-extrabold text-indigo-700 mt-1 block">{{ $treatmentsThisMonth }}</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-teal-600 block">Patients Treated</span>
+                <span class="text-2xl sm:text-3xl font-extrabold text-teal-800 mt-1 block">{{ $uniquePatientsTreated }}</span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Unique patients</span>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-800 flex items-center justify-center font-bold">
-                📅
+            <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 block">This Month</span>
+                <span class="text-2xl sm:text-3xl font-extrabold text-indigo-800 mt-1 block">{{ $treatmentsThisMonth }}</span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Current billing period</span>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             </div>
         </div>
     </div>
@@ -93,7 +96,7 @@
             </div>
 
             <button type="submit"
-                class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold hover:bg-slate-900 transition">
+                class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-semibold hover:bg-slate-900 transition">
                 Filter
             </button>
 
@@ -106,13 +109,13 @@
     </div>
 
     <!-- Treatment Records Table -->
-    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-slate-600">
                 <thead class="bg-slate-50/80 text-[11px] uppercase font-bold text-slate-400 border-b border-slate-100">
                     <tr>
                         <th class="px-6 py-4">Date & Time</th>
-                        <th class="px-6 py-4">Patient Demographics</th>
+                        <th class="px-6 py-4">Patient</th>
                         <th class="px-6 py-4">Attending Dentist</th>
                         <th class="px-6 py-4">Procedure & Tooth #</th>
                         <th class="px-6 py-4">Diagnosis & Rendered Care</th>
@@ -132,17 +135,17 @@
                             <!-- Patient -->
                             <td class="px-6 py-4 whitespace-nowrap text-xs">
                                 <a href="{{ route('patients.show', $treatment->patient_id) }}" class="font-bold text-slate-900 hover:text-cyan-700 flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold text-[10px] shrink-0">
-                                        {{ substr($treatment->patient->name, 0, 1) }}
+                                    <span class="w-7 h-7 rounded-full bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-[10px] shrink-0">
+                                        {{ strtoupper(substr($treatment->patient->name, 0, 1)) }}
                                     </span>
                                     <span>{{ $treatment->patient->name }}</span>
                                 </a>
-                                <span class="text-[11px] text-slate-400 block font-mono pl-8">{{ $treatment->patient->phone }}</span>
+                                <span class="text-[11px] text-slate-400 block font-mono pl-9">{{ $treatment->patient->phone }}</span>
                             </td>
 
                             <!-- Dentist -->
                             <td class="px-6 py-4 whitespace-nowrap text-xs">
-                                <span class="font-bold text-slate-800">{{ $treatment->doctor->name }}</span>
+                                <span class="font-semibold text-slate-800">{{ $treatment->doctor->name }}</span>
                                 <span class="block text-[11px] text-slate-400">{{ $treatment->doctor->doctorProfile->specialization ?? 'General Dentist' }}</span>
                             </td>
 
@@ -172,7 +175,7 @@
                             <!-- Prescription Rx -->
                             <td class="px-6 py-4 whitespace-nowrap text-xs">
                                 @if($treatment->prescription)
-                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold">
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
                                         <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                                         Rx Issued
                                     </span>
@@ -185,13 +188,13 @@
                             <td class="px-6 py-4 whitespace-nowrap text-right text-xs">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('treatments.show', $treatment->id) }}"
-                                        class="px-2.5 py-1 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 font-bold transition">
+                                        class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition">
                                         View Dossier
                                     </a>
 
                                     @if(!auth()->user()->isReceptionist())
                                         <a href="{{ route('treatments.edit', $treatment->id) }}"
-                                            class="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition" title="Edit Treatment Record">
+                                            class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition" title="Edit Treatment Record">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                         </a>
                                     @endif

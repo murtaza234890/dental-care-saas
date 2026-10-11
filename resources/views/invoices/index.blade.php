@@ -2,74 +2,78 @@
     <!-- Header -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">
-                Billing and Financial Ledger 💳
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                Billing and Financial Ledger
             </h2>
-            <p class="mt-1 text-sm text-slate-500">
-                Manage dental invoices, payment receipts, discounts, and real-time patient balances.
+            <p class="mt-1 text-xs sm:text-sm text-slate-500">
+                Dental billing statements, counter receipts, procedure items, and patient receivables.
             </p>
         </div>
 
         <div>
             <a href="{{ route('invoices.create') }}"
-                class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-cyan-600/25 hover:from-cyan-700 hover:to-teal-700 transition active:scale-[0.99]">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Issue New Invoice
+                class="inline-flex items-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition active:scale-[0.99]">
+                <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                <span>Issue New Invoice</span>
             </a>
         </div>
     </div>
 
     <!-- Financial KPI Metric Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6">
         <!-- Total Billed -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block">Total Invoiced</span>
-                <span class="text-2xl font-black font-mono text-slate-900 mt-1 block">
+                <span class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-900 mt-1 block">
                     Rs. {{ number_format($totalInvoiced, 0) }}
                 </span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Gross billings</span>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold">
-                🧾
+            <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
             </div>
         </div>
 
         <!-- Total Collected -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 block">Total Collected</span>
-                <span class="text-2xl font-black font-mono text-emerald-700 mt-1 block">
+                <span class="text-2xl sm:text-3xl font-extrabold font-mono text-emerald-700 mt-1 block">
                     Rs. {{ number_format($totalPaid, 0) }}
                 </span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Recorded payments</span>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
-                💵
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
         </div>
 
         <!-- Outstanding Balance -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-rose-500 block">Outstanding Balance</span>
-                <span class="text-2xl font-black font-mono {{ $totalOutstanding > 0 ? 'text-rose-600' : 'text-slate-900' }} mt-1 block">
+                <span class="text-2xl sm:text-3xl font-extrabold font-mono {{ $totalOutstanding > 0 ? 'text-rose-600' : 'text-slate-900' }} mt-1 block">
                     Rs. {{ number_format($totalOutstanding, 0) }}
                 </span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Pending receivables</span>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center font-bold">
-                ⏳
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
         </div>
 
         <!-- Pending Invoices Count -->
-        <div class="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold uppercase tracking-wider text-amber-600 block">Pending Invoices</span>
-                <span class="text-2xl font-black font-mono text-amber-700 mt-1 block">
+                <span class="text-2xl sm:text-3xl font-extrabold font-mono text-amber-700 mt-1 block">
                     {{ $pendingCount }}
                 </span>
+                <span class="text-[11px] text-slate-500 mt-0.5 block">Unsettled accounts</span>
             </div>
-            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
-                ⚠️
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
             </div>
         </div>
     </div>
@@ -79,7 +83,7 @@
         <form action="{{ route('invoices.index') }}" method="GET" class="flex flex-wrap items-center gap-3">
             <!-- Search Bar -->
             <div class="relative flex-1 min-w-[220px]">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Search by Invoice #, patient name, phone..."
+                <input type="text" name="search" value="{{ $search }}" placeholder="Search by invoice #, patient, phone..."
                     class="w-full rounded-xl border border-slate-300 pl-9 pr-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 focus:border-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-600/20">
                 <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             </div>
@@ -105,7 +109,7 @@
             </div>
 
             <button type="submit"
-                class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold hover:bg-slate-900 transition">
+                class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-semibold hover:bg-slate-900 transition">
                 Filter
             </button>
 
@@ -118,13 +122,13 @@
     </div>
 
     <!-- Invoices Table -->
-    <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm text-slate-600">
                 <thead class="bg-slate-50/80 text-[11px] uppercase font-bold text-slate-400 border-b border-slate-100">
                     <tr>
                         <th class="px-6 py-4">Invoice # & Date</th>
-                        <th class="px-6 py-4">Patient Profile</th>
+                        <th class="px-6 py-4">Patient</th>
                         <th class="px-6 py-4">Total Amount</th>
                         <th class="px-6 py-4">Paid Amount</th>
                         <th class="px-6 py-4">Balance Due</th>
@@ -141,19 +145,19 @@
                                     {{ $inv->invoice_number }}
                                 </a>
                                 <div class="text-[11px] text-slate-400 mt-0.5">
-                                    Issued: {{ $inv->created_at->format('M d, Y') }}
+                                    {{ $inv->created_at->format('M d, Y') }}
                                 </div>
                             </td>
 
                             <!-- Patient -->
                             <td class="px-6 py-4 whitespace-nowrap text-xs">
                                 <a href="{{ route('patients.show', $inv->patient_id) }}" class="font-bold text-slate-900 hover:text-cyan-700 flex items-center gap-2">
-                                    <span class="w-6 h-6 rounded-full bg-cyan-100 text-cyan-700 flex items-center justify-center font-bold text-[10px] shrink-0">
-                                        {{ substr($inv->patient->name, 0, 1) }}
+                                    <span class="w-7 h-7 rounded-full bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-[10px] shrink-0">
+                                        {{ strtoupper(substr($inv->patient->name, 0, 1)) }}
                                     </span>
                                     <span>{{ $inv->patient->name }}</span>
                                 </a>
-                                <span class="text-[11px] text-slate-400 font-mono block pl-8">{{ $inv->patient->phone }}</span>
+                                <span class="text-[11px] text-slate-400 font-mono block pl-9">{{ $inv->patient->phone }}</span>
                             </td>
 
                             <!-- Total -->
@@ -179,19 +183,19 @@
                             <!-- Status -->
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($inv->status === 'paid')
-                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                                         Paid
                                     </span>
                                 @elseif($inv->status === 'partially_paid')
-                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
                                         Partial
                                     </span>
                                 @elseif($inv->status === 'cancelled')
-                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200">
                                         Cancelled
                                     </span>
                                 @else
-                                    <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
                                         Unpaid
                                     </span>
                                 @endif
@@ -201,7 +205,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-right text-xs">
                                 <div class="flex items-center justify-end gap-2">
                                     <a href="{{ route('invoices.show', $inv->id) }}"
-                                        class="px-2.5 py-1 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 font-bold transition">
+                                        class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition">
                                         View & Ledger
                                     </a>
                                 </div>

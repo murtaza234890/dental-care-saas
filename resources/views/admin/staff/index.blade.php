@@ -3,7 +3,7 @@
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                Clinic Staff & Team Access 👥
+                Clinic Staff & Team Access
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Manage practitioner credentials, configure team roles, and maintain secure operational access for <strong class="text-slate-800">{{ auth()->user()->clinic->name }}</strong>.

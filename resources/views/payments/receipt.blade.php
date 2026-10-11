@@ -36,8 +36,8 @@
     <div class="bg-white rounded-3xl p-8 max-w-lg w-full border border-slate-200/90 shadow-lg space-y-6">
         <!-- Header -->
         <div class="text-center pb-4 border-b border-slate-100">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-600 text-white flex items-center justify-center font-bold text-xl mx-auto mb-2 shadow-sm">
-                🦷
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-600 text-white flex items-center justify-center mx-auto mb-2 shadow-sm">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
             </div>
             <h1 class="text-lg font-black text-slate-900 tracking-tight">
                 {{ $payment->clinic->name }}

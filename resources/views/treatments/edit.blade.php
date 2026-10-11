@@ -63,7 +63,7 @@
                                 <button type="button" @click="toggleTooth('{{ $t }}')"
                                     :class="hasTooth('{{ $t }}') ? 'bg-cyan-600 text-white border-cyan-700 shadow-sm' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
                                     class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center transition">
-                                    <span class="text-[9px]">🦷</span>
+                                    <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                     <span>{{ $t }}</span>
                                 </button>
                             @endforeach
@@ -78,7 +78,7 @@
                                     :class="hasTooth('{{ $t }}') ? 'bg-cyan-600 text-white border-cyan-700 shadow-sm' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
                                     class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center transition">
                                     <span>{{ $t }}</span>
-                                    <span class="text-[9px]">🦷</span>
+                                    <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                 </button>
                             @endforeach
                         </div>

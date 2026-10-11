@@ -101,8 +101,9 @@
             </p>
 
             <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('register.clinic') }}" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm hover:from-cyan-700 hover:to-teal-700 shadow-xl shadow-cyan-600/30 transition transform hover:-translate-y-0.5">
-                    🚀 Onboard Your Clinic (14-Day Free Trial)
+                <a href="{{ route('register.clinic') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm hover:from-cyan-700 hover:to-teal-700 shadow-xl shadow-cyan-600/30 transition transform hover:-translate-y-0.5">
+                    <span>Onboard Your Clinic (14-Day Free Trial)</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </a>
                 <a href="{{ route('login') }}" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 hover:border-slate-300 shadow-sm transition">
                     Sign In to Existing Workspace &rarr;

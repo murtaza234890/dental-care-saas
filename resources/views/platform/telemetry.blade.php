@@ -10,8 +10,8 @@
                 <span>/</span>
                 <span class="text-slate-400">System Telemetry</span>
             </div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                Platform Telemetry & SaaS Metrics 📡
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                Platform Telemetry & SaaS Metrics
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Cross-tenant system utilization, cumulative gross transaction value (GTV), and operational health indicators.

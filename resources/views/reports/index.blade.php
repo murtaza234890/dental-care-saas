@@ -2,8 +2,8 @@
     <!-- Header & Action Bar -->
     <div class="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                Financial Analytics & Clinic Performance 📊
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                Financial Analytics & Clinic Performance
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Executive revenue telemetry, doctor productivity, collection efficiency, and procedural yield for <strong class="text-slate-800">{{ $clinic->name }}</strong>.
@@ -225,8 +225,8 @@
     <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden mb-8">
         <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
             <div>
-                <h3 class="text-base font-extrabold text-slate-900">
-                    Doctor Productivity & Revenue Contribution 🩺
+                <h3 class="text-base font-bold text-slate-900">
+                    Doctor Productivity & Revenue Contribution
                 </h3>
                 <p class="text-xs text-slate-500 mt-0.5">
                     Individual performance matrix of consulting dental surgeons in {{ $clinic->name }}.

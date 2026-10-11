@@ -10,16 +10,16 @@
                 <span>/</span>
                 <span class="text-slate-400">New Procedure</span>
             </div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">
-                Add Dental Procedure 📋
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                Add Dental Procedure
             </h2>
-            <p class="mt-1 text-sm text-slate-500">
+            <p class="mt-1 text-xs sm:text-sm text-slate-500">
                 Register a clinical procedure into your clinic's catalog, define appointment duration and standard tariff.
             </p>
         </div>
 
         <a href="{{ route('services.index') }}"
-            class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-2xl hover:bg-slate-50 transition">
+            class="px-4 py-2 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition">
             Back to Catalog
         </a>
     </div>
@@ -38,11 +38,11 @@
 
     <div x-data="serviceCreateForm()">
         <!-- 1-Click Clinical Presets Bar -->
-        <div class="bg-gradient-to-r from-cyan-900 via-slate-900 to-slate-900 text-white rounded-3xl p-6 mb-8 shadow-sm">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl p-5 sm:p-6 mb-8 border border-slate-700/60 shadow-sm">
             <div class="flex items-center justify-between mb-3">
                 <div class="flex items-center gap-2">
-                    <span class="text-base">⚡</span>
-                    <h3 class="text-sm font-black tracking-wide uppercase text-cyan-400">1-Click Clinical Procedure Presets</h3>
+                    <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <h3 class="text-xs sm:text-sm font-bold tracking-wide uppercase text-cyan-400">Clinical Procedure Presets</h3>
                 </div>
                 <span class="text-xs text-slate-400">Click any procedure below to auto-populate the form</span>
             </div>

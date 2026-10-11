@@ -3,7 +3,7 @@
     <div class="mb-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
             <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">
-                Appointments & Daily Schedule 📅
+                Appointments & Daily Schedule
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Manage patient visits, front-desk check-ins, and doctor chair schedules.
@@ -161,7 +161,8 @@
                                 <div class="text-[11px] text-slate-400 font-mono">{{ $app->patient->phone }}</div>
                                 @if($app->patient->medical_history)
                                     <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
-                                        ⚠️ Alert: {{ \Illuminate\Support\Str::limit($app->patient->medical_history, 30) }}
+                                        <svg class="w-3 h-3 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        Alert: {{ \Illuminate\Support\Str::limit($app->patient->medical_history, 30) }}
                                     </span>
                                 @endif
                             </td>
@@ -239,7 +240,8 @@
                                     @if(in_array($app->status, ['in_progress', 'completed']) && !auth()->user()->isReceptionist())
                                         <a href="{{ route('treatments.create', ['appointment_id' => $app->id]) }}"
                                             class="px-2 py-1 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 font-bold transition flex items-center gap-1 text-[11px]" title="Document Dental Procedure">
-                                            <span>🦷 Record</span>
+                                            <svg class="w-3 h-3 text-teal-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
+                                            <span>Record</span>
                                         </a>
                                     @endif
 

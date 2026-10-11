@@ -3,7 +3,7 @@
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                Clinic Workspace Settings ⚙️
+                Clinic Workspace Settings
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Configure clinic identity, public online booking portal, WhatsApp recall channel, and billing currency.
@@ -49,8 +49,10 @@
 
             <!-- Section 1: Clinic Identity & Public Portal -->
             <div class="mb-8">
-                <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-                    <span class="text-base">🏥</span>
+                <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </span>
                     <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">
                         Clinic Identity & Public Web Presence
                     </h3>
@@ -108,8 +110,10 @@
 
             <!-- Section 2: Contact & Patient Communication Channels -->
             <div class="mb-8">
-                <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-                    <span class="text-base">📞</span>
+                <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    </span>
                     <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">
                         Contact Details & Patient Channels
                     </h3>
@@ -173,8 +177,10 @@
 
             <!-- Section 3: Emergency Announcements Banner -->
             <div class="mb-8">
-                <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-                    <span class="text-base">📢</span>
+                <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                    </span>
                     <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">
                         Public Portal Emergency Notice & Announcements
                     </h3>
@@ -196,8 +202,10 @@
 
             <!-- Section 4: Currency & Regional Localization -->
             <div class="mb-8">
-                <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-                    <span class="text-base">🌐</span>
+                <div class="flex items-center gap-2.5 mb-4 pb-2 border-b border-slate-100">
+                    <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                    </span>
                     <h3 class="text-xs font-black uppercase tracking-wider text-slate-800">
                         Financial & Regional Localization
                     </h3>

@@ -24,33 +24,34 @@
                 <p class="text-sm text-slate-500 mt-1">Manage your clinic's SaaS tier, resource quotas, payment card, and renewals.</p>
             </div>
             <div class="flex items-center gap-3">
-                <button type="button" @click="showCheckout = true" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white text-sm font-bold hover:from-cyan-700 hover:to-teal-700 shadow-md shadow-cyan-600/20 transition">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                    💳 Add Card & Upgrade
+                <button type="button" @click="showCheckout = true" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition">
+                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                    <span>Update Payment Card</span>
                 </button>
             </div>
         </div>
 
         <!-- Trial Expired Paywall Banner -->
         @if(($subscription && $subscription->isTrialExpired()) || session('trial_expired'))
-            <div class="p-6 rounded-2xl bg-gradient-to-r from-rose-600 via-red-600 to-amber-700 text-white shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-5 border border-rose-500/50">
+            <div class="p-6 rounded-2xl bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-5 border border-rose-800/60">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-white shadow-inner">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center flex-shrink-0 text-rose-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-white/20">Trial Expired</span>
-                            <span class="text-xs text-rose-100 font-semibold">Dashboard Locked</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/30">Trial Concluded</span>
+                            <span class="text-xs text-rose-200 font-semibold">Workspace Paused</span>
                         </div>
-                        <h2 class="text-lg font-bold text-white mt-1">Your 14-Day Free Trial Has Ended</h2>
-                        <p class="text-xs text-rose-100 max-w-2xl mt-0.5 leading-relaxed">
-                            Your clinic patient files, doctor records, and medical dossiers remain 100% safe and intact. Add your payment card below to instantly unlock the clinical dashboard and resume operations.
+                        <h2 class="text-lg font-bold text-white mt-1">14-Day Free Trial Has Ended</h2>
+                        <p class="text-xs text-slate-300 max-w-2xl mt-0.5 leading-relaxed">
+                            Your clinic patient files, medical records, and configurations are secure. Add your billing card below to activate your subscription and unlock full clinical dashboard access.
                         </p>
                     </div>
                 </div>
-                <button type="button" @click="showCheckout = true" class="px-6 py-3 rounded-xl bg-white text-rose-900 font-black text-xs hover:bg-rose-50 shadow-lg transition flex-shrink-0">
-                    Unlock Workspace With Card &rarr;
+                <button type="button" @click="showCheckout = true" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-bold text-xs shadow-md transition flex-shrink-0">
+                    <span>Activate Workspace With Card</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                 </button>
             </div>
         @endif
@@ -97,7 +98,7 @@
                         @endif
                     </div>
 
-                    <h2 class="text-2xl font-black text-white mt-3">{{ $currentPlan->name ?? 'Starter Clinic' }}</h2>
+                    <h2 class="text-2xl font-bold text-white mt-3">{{ $currentPlan->name ?? 'Starter Clinic' }}</h2>
                     <p class="text-xs text-slate-400 mt-1">Billing Interval: <span class="text-slate-200 capitalize font-medium">{{ $subscription->billing_interval ?? 'Monthly' }}</span></p>
 
                     <div class="mt-6 pt-5 border-t border-slate-700/60 space-y-2 text-xs">
@@ -117,8 +118,9 @@
                 </div>
 
                 <div class="mt-6 pt-4 border-t border-slate-700/60">
-                    <button type="button" @click="showCheckout = true" class="w-full py-2.5 rounded-xl bg-cyan-500 text-slate-900 font-extrabold text-xs hover:bg-cyan-400 transition shadow-md">
-                        Upgrade or Update Payment Card
+                    <button type="button" @click="showCheckout = true" class="w-full py-2.5 rounded-xl bg-cyan-500 text-slate-900 font-bold text-xs hover:bg-cyan-400 transition shadow-md flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        <span>Upgrade or Enter Card</span>
                     </button>
                 </div>
             </div>
@@ -127,7 +129,7 @@
             <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
                 <div>
                     <h3 class="text-base font-bold text-slate-900">Resource Quotas & Allocation</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Real-time usage versus your current subscribed plan limits.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Real-time capacity versus your current subscribed plan limits.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -185,7 +187,7 @@
 
                 <!-- Enabled Features Checklist -->
                 <div class="pt-2">
-                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Enabled Tier Features:</h4>
+                    <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Included Features:</h4>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                         @foreach(($currentPlan->features ?? []) as $feat)
                             <div class="flex items-center gap-2 text-xs text-slate-600">
@@ -202,7 +204,7 @@
         <div class="space-y-4">
             <div>
                 <h2 class="text-lg font-bold text-slate-900">Select Subscription Tier</h2>
-                <p class="text-xs text-slate-500">Pick the plan that fits your dental practice size and workflow requirements.</p>
+                <p class="text-xs text-slate-500">Choose the plan tailored to your clinical volume and practice scale.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -257,8 +259,9 @@
                         <div class="mt-6 pt-4 border-t border-slate-100">
                             <button type="button"
                                 @click="openCheckout({{ $plan->id }}, '{{ $plan->name }}', {{ $plan->price_monthly }}, {{ $plan->price_annual }})"
-                                class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-cyan-700 transition shadow-sm flex items-center justify-center gap-2">
-                                <span>💳 Pay & Upgrade with Card</span>
+                                class="w-full py-2.5 rounded-xl bg-slate-900 text-white font-semibold text-xs hover:bg-slate-800 transition shadow-sm flex items-center justify-center gap-2">
+                                <svg class="w-3.5 h-3.5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                <span>Subscribe With Card</span>
                             </button>
                         </div>
                     </div>
@@ -270,8 +273,8 @@
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
                 <div>
-                    <h3 class="text-base font-bold text-slate-900">SaaS Billing & Invoices History</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Automated invoices generated for workspace subscriptions.</p>
+                    <h3 class="text-base font-bold text-slate-900">SaaS Billing History</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Automated subscription receipts generated for this workspace.</p>
                 </div>
             </div>
 
@@ -321,26 +324,28 @@
 
         <!-- Interactive Credit Card Checkout Modal -->
         <div x-show="showCheckout" x-cloak class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4">
-            <div @click.away="showCheckout = false" class="bg-white rounded-3xl max-w-lg w-full p-7 text-left shadow-2xl space-y-6 relative border border-slate-200">
+            <div @click.away="showCheckout = false" class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 text-left shadow-2xl space-y-6 relative border border-slate-200">
                 <div class="flex items-center justify-between border-b pb-4">
                     <div>
-                        <h3 class="text-lg font-black text-slate-900">Add Payment Card & Upgrade</h3>
-                        <p class="text-xs text-slate-500">Secure 256-bit encrypted card billing checkout</p>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900">Payment Card Checkout</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Encrypted 256-bit SSL transaction channel</p>
                     </div>
-                    <button type="button" @click="showCheckout = false" class="text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
+                    <button type="button" @click="showCheckout = false" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
                 </div>
 
                 <form method="POST" action="{{ route('admin.subscription.checkout') }}" class="space-y-4">
                     @csrf
 
                     <!-- Selected Plan Preview -->
-                    <div class="p-4 rounded-2xl bg-cyan-50/60 border border-cyan-200 flex items-center justify-between">
+                    <div class="p-4 rounded-2xl bg-cyan-50/70 border border-cyan-200 flex items-center justify-between">
                         <div>
-                            <span class="text-[10px] uppercase font-bold text-cyan-700 tracking-wider block">Selected Plan</span>
-                            <span class="text-sm font-extrabold text-slate-900" x-text="selectedPlanName"></span>
+                            <span class="text-[10px] uppercase font-bold text-cyan-800 tracking-wider block">Selected Plan</span>
+                            <span class="text-sm font-bold text-slate-900" x-text="selectedPlanName"></span>
                         </div>
                         <div class="text-right">
-                            <span class="text-lg font-black text-cyan-800" x-text="'PKR ' + currentPrice.toLocaleString()"></span>
+                            <span class="text-base sm:text-lg font-extrabold text-cyan-900" x-text="'PKR ' + currentPrice.toLocaleString()"></span>
                             <span class="text-[10px] text-slate-500 block" x-text="billingInterval === 'yearly' ? 'billed annually' : 'billed monthly'"></span>
                         </div>
                     </div>
@@ -356,7 +361,7 @@
                                 <input type="radio" name="billing_interval" value="monthly" x-model="billingInterval" class="text-cyan-600">
                                 <div>
                                     <span class="text-xs font-bold text-slate-800 block">Monthly</span>
-                                    <span class="text-[10px] text-slate-500">Billed each month</span>
+                                    <span class="text-[10px] text-slate-500">Standard cycle</span>
                                 </div>
                             </label>
 
@@ -364,7 +369,7 @@
                                 <input type="radio" name="billing_interval" value="yearly" x-model="billingInterval" class="text-cyan-600">
                                 <div>
                                     <span class="text-xs font-bold text-slate-800 block">Yearly <span class="text-emerald-600 font-extrabold text-[10px]">Save ~17%</span></span>
-                                    <span class="text-[10px] text-slate-500">12 months upfront</span>
+                                    <span class="text-[10px] text-slate-500">12 months prepaid</span>
                                 </div>
                             </label>
                         </div>
@@ -381,9 +386,7 @@
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1 flex items-center justify-between">
                             <span>Card Number</span>
-                            <span class="text-[10px] font-mono text-slate-400 flex items-center gap-1">
-                                💳 Visa / Mastercard
-                            </span>
+                            <span class="text-[10px] text-slate-400 font-medium">Visa &bull; Mastercard</span>
                         </label>
                         <input type="text" name="card_number" required placeholder="4242 4242 4242 4242" maxlength="19"
                             class="w-full px-3.5 py-2.5 text-xs font-mono rounded-xl border border-slate-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
@@ -410,7 +413,7 @@
                             <input type="text" name="billing_country" value="Pakistan" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Postal / ZIP Code</label>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Postal / ZIP</label>
                             <input type="text" name="billing_zip" value="44000" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-cyan-500 focus:outline-none">
                         </div>
                     </div>
@@ -419,8 +422,9 @@
                         <button type="button" @click="showCheckout = false" class="px-4 py-2.5 text-xs font-semibold rounded-xl text-slate-600 hover:bg-slate-100">
                             Cancel
                         </button>
-                        <button type="submit" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs shadow-md shadow-emerald-600/25 transition">
-                            🔒 Pay & Activate Workspace
+                        <button type="submit" class="flex-1 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <span>Confirm & Activate Subscription</span>
                         </button>
                     </div>
                 </form>

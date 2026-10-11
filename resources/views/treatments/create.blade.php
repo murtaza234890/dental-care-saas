@@ -39,7 +39,7 @@
             <div class="mb-6 rounded-2xl bg-teal-50 border border-teal-200 p-4 text-xs text-teal-900 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <span class="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold">
-                        ✓
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                     </span>
                     <div>
                         <span class="font-bold">Linked to Scheduled Consultation:</span>
@@ -159,7 +159,7 @@
                                         <button type="button" @click="toggleTooth('{{ $t }}')"
                                             :class="hasTooth('{{ $t }}') ? 'bg-cyan-600 text-white border-cyan-700 shadow-md shadow-cyan-600/30' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
                                             class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center transition active:scale-95">
-                                            <span class="text-[9px] opacity-75">🦷</span>
+                                            <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                             <span>{{ $t }}</span>
                                         </button>
                                     @endforeach
@@ -174,7 +174,7 @@
                                         <button type="button" @click="toggleTooth('{{ $t }}')"
                                             :class="hasTooth('{{ $t }}') ? 'bg-cyan-600 text-white border-cyan-700 shadow-md shadow-cyan-600/30' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
                                             class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center transition active:scale-95">
-                                            <span class="text-[9px] opacity-75">🦷</span>
+                                            <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                             <span>{{ $t }}</span>
                                         </button>
                                     @endforeach
@@ -194,7 +194,7 @@
                                             :class="hasTooth('{{ $t }}') ? 'bg-cyan-600 text-white border-cyan-700 shadow-md shadow-cyan-600/30' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
                                             class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center transition active:scale-95">
                                             <span>{{ $t }}</span>
-                                            <span class="text-[9px] opacity-75">🦷</span>
+                                            <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                         </button>
                                     @endforeach
                                 </div>
@@ -209,7 +209,7 @@
                                             :class="hasTooth('{{ $t }}') ? 'bg-cyan-600 text-white border-cyan-700 shadow-md shadow-cyan-600/30' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'"
                                             class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center transition active:scale-95">
                                             <span>{{ $t }}</span>
-                                            <span class="text-[9px] opacity-75">🦷</span>
+                                            <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                         </button>
                                     @endforeach
                                 </div>

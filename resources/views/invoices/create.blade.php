@@ -52,8 +52,8 @@
         @if($selectedAppointment)
             <div class="mb-6 rounded-2xl bg-teal-50 border border-teal-200 p-4 text-xs text-teal-900 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold">
-                        ✓
+                    <span class="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                     </span>
                     <div>
                         <span class="font-bold">Billing for Consultation:</span>

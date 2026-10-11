@@ -4,7 +4,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
             @if($clinic->emergency_notice)
                 <div class="mb-8 rounded-2xl bg-amber-50 border border-amber-200 p-4 text-sm font-semibold text-amber-900 flex items-start gap-3 shadow-sm">
-                    <span class="text-lg">📢</span>
+                    <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+                    </span>
                     <div>
                         <span class="font-extrabold block text-xs uppercase tracking-wider text-amber-800">Clinic Announcement</span>
                         <span class="text-xs sm:text-sm text-amber-900">{{ $clinic->emergency_notice }}</span>
@@ -68,8 +70,8 @@
                                 <span class="text-xs font-bold uppercase tracking-wider text-cyan-600">Fast Appointment</span>
                                 <h3 class="text-xl font-bold text-slate-900">Online Slot Booking</h3>
                             </div>
-                            <span class="w-10 h-10 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center font-bold">
-                                🦷
+                            <span class="w-10 h-10 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                             </span>
                         </div>
 

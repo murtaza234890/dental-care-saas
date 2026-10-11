@@ -2,8 +2,8 @@
     <!-- Header -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                All Clinics Registry & SaaS Tenants 🏢
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                All Clinics Registry & SaaS Tenants
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Centralized tenant supervision, subscription status controls, and cross-clinic workspace telemetry.

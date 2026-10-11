@@ -2,10 +2,10 @@
     <!-- Header & Action Bar -->
     <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-extrabold tracking-tight text-slate-900 flex items-center gap-2">
-                Services Catalog & Pricing Engine 🦷
+            <h2 class="text-2xl font-bold tracking-tight text-slate-900">
+                Services Catalog & Pricing Engine
             </h2>
-            <p class="mt-1 text-sm text-slate-500">
+            <p class="mt-1 text-xs sm:text-sm text-slate-500">
                 Standardize dental procedures, categorize clinical specialties, and configure tariffs for booking & invoicing.
             </p>
         </div>
@@ -13,9 +13,9 @@
         @if($user->isClinicAdmin())
             <div>
                 <a href="{{ route('services.create') }}"
-                    class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-md shadow-cyan-600/25 hover:from-cyan-700 hover:to-teal-700 transition active:scale-[0.99]">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                    Add New Procedure
+                    class="inline-flex items-center gap-2 rounded-xl bg-slate-900 hover:bg-slate-800 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition active:scale-[0.99]">
+                    <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Add New Procedure</span>
                 </a>
             </div>
         @endif

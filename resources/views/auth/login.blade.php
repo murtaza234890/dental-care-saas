@@ -42,8 +42,9 @@
 
     <!-- Quick Demo Accounts Switcher -->
     <div class="mt-6 pt-6 border-t border-slate-100">
-        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 text-center">
-            ⚡ Quick Demo Login (Click to Fill)
+        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3 flex items-center justify-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span>Quick Demo Accounts (Click to Fill)</span>
         </p>
         <div class="grid grid-cols-2 gap-2 text-xs">
             <button type="button" onclick="fillDemo('dr.ahmed@citydental.test')"

@@ -36,7 +36,7 @@
             <div class="mb-6 rounded-2xl bg-cyan-50 border border-cyan-200 p-4 text-xs text-cyan-900 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <span class="w-8 h-8 rounded-xl bg-cyan-600 text-white flex items-center justify-center font-bold">
-                        🦷
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                     </span>
                     <div>
                         <span class="font-bold">Linking Recall to Treatment Record #{{ $selectedTreatment->id }}:</span>

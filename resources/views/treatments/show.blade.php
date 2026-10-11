@@ -39,7 +39,7 @@
         @if ($treatment->patient->medical_history)
             <div class="rounded-3xl bg-rose-50 border-2 border-rose-300 p-4 shadow-sm flex items-start gap-3.5">
                 <div class="w-9 h-9 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-base shrink-0 shadow-md shadow-rose-600/30">
-                    ⚠️
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                 </div>
                 <div>
                     <span class="text-xs font-black tracking-wider uppercase text-rose-800 block">
@@ -100,8 +100,9 @@
                         {{ $treatment->created_at->format('l, M d, Y - h:i A') }}
                     </span>
                     @if($treatment->appointment)
-                        <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold text-teal-700">
-                            ✓ Linked to Appointment #{{ $treatment->appointment_id }}
+                        <span class="inline-flex items-center gap-1.5 mt-1 text-[11px] font-semibold text-teal-700">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>Linked to Appointment #{{ $treatment->appointment_id }}</span>
                         </span>
                     @endif
                 </div>
@@ -142,7 +143,7 @@
                                 $isTreated = in_array($t, $treatedTeeth);
                             @endphp
                             <div class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center {{ $isTreated ? 'bg-cyan-600 text-white border-cyan-700 shadow-md shadow-cyan-600/30 ring-2 ring-cyan-400' : 'bg-white text-slate-400 border-slate-200' }}">
-                                <span class="text-[9px]">🦷</span>
+                                <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                                 <span>{{ $t }}</span>
                             </div>
                         @endforeach
@@ -158,7 +159,7 @@
                             @endphp
                             <div class="w-8 h-10 rounded-xl border font-mono font-bold text-xs flex flex-col items-center justify-center {{ $isTreated ? 'bg-cyan-600 text-white border-cyan-700 shadow-md shadow-cyan-600/30 ring-2 ring-cyan-400' : 'bg-white text-slate-400 border-slate-200' }}">
                                 <span>{{ $t }}</span>
-                                <span class="text-[9px]">🦷</span>
+                                <svg class="w-2.5 h-2.5 text-current opacity-70 mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3C4.5 3 3 5.5 3 8c0 4 2.5 7.5 3.5 11 .5 1.5 2 2 3.5 2s2-1 2.5-3.5c.5-2.5 1-2.5 1.5 0 .5 2.5 1 3.5 2.5 3.5s3-.5 3.5-2C21 15.5 21 12 21 8c0-2.5-1.5-5-4-5-2 0-3.5 1.5-5 1.5S9 3 7 3z"/></svg>
                             </div>
                         @endforeach
                     </div>

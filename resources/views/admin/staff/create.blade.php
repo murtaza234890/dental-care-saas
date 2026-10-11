@@ -11,7 +11,7 @@
                 <span class="text-slate-400">Onboard New Team Member</span>
             </div>
             <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">
-                Onboard Clinic Staff Member 👤
+                Onboard Clinic Staff Member
             </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Grant role-based operational permissions for dentists, receptionists, or co-administrators.
@@ -124,7 +124,9 @@
             <!-- Doctor Specific Profile Panel (Conditional when role is dentist) -->
             <div x-show="role === 'dentist'" x-cloak class="p-6 rounded-2xl bg-cyan-50/60 border border-cyan-100 mb-8">
                 <div class="flex items-center gap-2 mb-4">
-                    <span class="text-base">🩺</span>
+                    <span class="w-7 h-7 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 4h2a2 2 0 012 2v7a6 6 0 01-12 0V6a2 2 0 012-2h2m0 0V2m4 2V2m-2 16v3m0 0a2 2 0 104 0m-4 0a2 2 0 11-4 0"/></svg>
+                    </span>
                     <h3 class="text-xs font-black uppercase tracking-wider text-cyan-900">
                         Doctor Profile & Appointment Slot Configuration
                     </h3>

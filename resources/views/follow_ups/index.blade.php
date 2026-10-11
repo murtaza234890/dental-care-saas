@@ -387,6 +387,7 @@
                             <th class="px-4 py-3">Appointment Reference</th>
                             <th class="px-4 py-3">Channel & Status</th>
                             <th class="px-4 py-3">Message Preview</th>
+                            <th class="px-4 py-3 text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -418,6 +419,14 @@
                                 </td>
                                 <td class="px-4 py-3 max-w-xs truncate text-slate-500 text-[11px]" title="{{ $notif->message_body }}">
                                     {{ \Illuminate\Support\Str::limit($notif->message_body, 60) }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-right">
+                                    <a href="https://wa.me/{{ $notif->recipient_phone }}?text={{ rawurlencode($notif->message_body) }}" target="_blank"
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 font-bold text-[11px] transition shadow-2xs"
+                                        title="Open chat directly in WhatsApp">
+                                        <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        <span>Open Chat &rarr;</span>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

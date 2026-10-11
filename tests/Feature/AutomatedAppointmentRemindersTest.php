@@ -322,4 +322,31 @@ class AutomatedAppointmentRemindersTest extends TestCase
         $response->assertSee('03219876543');
         $response->assertSee('delivered');
     }
+
+    public function test_direct_whatsapp_route_redirects_to_wa_me_and_creates_log(): void
+    {
+        [$clinic, $doctor, $patient] = $this->createClinicEnvironment();
+
+        $appointment = Appointment::create([
+            'clinic_id' => $clinic->id,
+            'patient_id' => $patient->id,
+            'doctor_id' => $doctor->id,
+            'appointment_date' => Carbon::tomorrow()->format('Y-m-d'),
+            'starts_at' => '11:00:00',
+            'ends_at' => '11:30:00',
+            'status' => 'confirmed',
+        ]);
+
+        $response = $this->actingAs($doctor)->get("/appointments/{$appointment->id}/whatsapp-direct");
+
+        $response->assertRedirect();
+        $this->assertStringContainsString('https://wa.me/923219876543', $response->headers->get('Location'));
+        $this->assertStringContainsString('Assalam-o-Alaikum', $response->headers->get('Location'));
+
+        $this->assertDatabaseHas('notification_logs', [
+            'clinic_id' => $clinic->id,
+            'appointment_id' => $appointment->id,
+            'recipient_phone' => '923219876543',
+        ]);
+    }
 }

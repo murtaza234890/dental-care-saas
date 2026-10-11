@@ -245,15 +245,14 @@
                                         </a>
                                     @endif
 
-                                    <!-- Quick WhatsApp Reminder Dispatch -->
+                                    <!-- Quick WhatsApp Reminder Dispatch & Direct Chat -->
                                     @if(in_array($app->status, ['confirmed', 'pending']))
-                                        <form action="{{ route('appointments.send-reminder', $app->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            <button type="submit"
-                                                class="p-1 rounded-lg text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 transition" title="Dispatch Automated WhatsApp Reminder">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('appointments.whatsapp-direct', $app->id) }}" target="_blank"
+                                            class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 font-semibold text-[11px] transition shadow-2xs"
+                                            title="Open & Send WhatsApp Reminder">
+                                            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                            <span>WhatsApp</span>
+                                        </a>
                                     @endif
 
                                     <!-- Quick Reschedule Trigger -->

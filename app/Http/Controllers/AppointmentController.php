@@ -268,9 +268,31 @@ class AppointmentController extends Controller
 
         try {
             $notificationService->sendAppointmentReminder($appointment, force: true);
-            return redirect()->back()->with('status', "WhatsApp reminder dispatched successfully to {$appointment->patient->name}.");
+            $waUrl = $notificationService->getWhatsAppWebUrl($appointment);
+
+            return redirect()->back()
+                ->with('status', "WhatsApp reminder logged successfully for {$appointment->patient->name}.")
+                ->with('whatsapp_open_url', $waUrl);
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', "Could not send reminder: " . $e->getMessage());
         }
+    }
+
+    /**
+     * Directly open WhatsApp Web / App chat with the pre-filled appointment reminder and log audit record.
+     */
+    public function openDirectWhatsApp(Appointment $appointment, \App\Services\WhatsAppNotificationService $notificationService): RedirectResponse
+    {
+        abort_unless($appointment->clinic_id === Auth::user()->clinic_id, 403);
+
+        try {
+            $notificationService->sendAppointmentReminder($appointment, force: true);
+        } catch (\Throwable $e) {
+            // If already sent or log exists, proceed to open chat
+        }
+
+        $waUrl = $notificationService->getWhatsAppWebUrl($appointment);
+
+        return redirect()->away($waUrl);
     }
 }

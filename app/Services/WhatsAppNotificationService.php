@@ -37,13 +37,14 @@ class WhatsAppNotificationService
         $phone = $this->sanitizePhoneNumber($patient->phone);
         $body = $this->buildReminderMessage($appointment);
 
-        $providerId = 'wamid_' . bin2hex(random_bytes(8));
+        $dispatchResult = $this->dispatchToGateway($phone, $body);
 
         // Clinical audit log
         Log::info("Dispatched WhatsApp Appointment Reminder for Appt #{$appointment->id} to {$phone}", [
             'clinic_id' => $clinic->id,
             'patient_id' => $patient->id,
-            'provider_id' => $providerId,
+            'provider_id' => $dispatchResult['provider_id'],
+            'status' => $dispatchResult['status'],
         ]);
 
         return NotificationLog::create([
@@ -54,8 +55,9 @@ class WhatsAppNotificationService
             'notification_type' => 'appointment_reminder_24h',
             'recipient_phone' => $phone,
             'message_body' => $body,
-            'status' => 'sent',
-            'provider_message_id' => $providerId,
+            'status' => $dispatchResult['status'],
+            'provider_message_id' => $dispatchResult['provider_id'],
+            'error_message' => $dispatchResult['error'],
             'sent_at' => Carbon::now(),
         ]);
     }
@@ -66,11 +68,12 @@ class WhatsAppNotificationService
     public function sendCustomMessage(Clinic $clinic, Patient $patient, string $message, ?Appointment $appointment = null): NotificationLog
     {
         $phone = $this->sanitizePhoneNumber($patient->phone);
-        $providerId = 'wamid_' . bin2hex(random_bytes(8));
+        $dispatchResult = $this->dispatchToGateway($phone, $message);
 
         Log::info("Dispatched Custom WhatsApp Message to {$phone}", [
             'clinic_id' => $clinic->id,
             'patient_id' => $patient->id,
+            'status' => $dispatchResult['status'],
         ]);
 
         return NotificationLog::create([
@@ -81,10 +84,108 @@ class WhatsAppNotificationService
             'notification_type' => 'recall_followup',
             'recipient_phone' => $phone,
             'message_body' => $message,
-            'status' => 'sent',
-            'provider_message_id' => $providerId,
+            'status' => $dispatchResult['status'],
+            'provider_message_id' => $dispatchResult['provider_id'],
+            'error_message' => $dispatchResult['error'],
             'sent_at' => Carbon::now(),
         ]);
+    }
+
+    /**
+     * Generate direct WhatsApp Web / App Click-to-Chat URL for manual 1-click dispatch.
+     */
+    public function getWhatsAppWebUrl(Appointment $appointment): string
+    {
+        $appointment->loadMissing(['clinic', 'patient', 'doctor.doctorProfile', 'service']);
+        $phone = $this->sanitizePhoneNumber($appointment->patient->phone);
+        $body = $this->buildReminderMessage($appointment);
+
+        return "https://wa.me/{$phone}?text=" . rawurlencode($body);
+    }
+
+    /**
+     * Generate custom direct WhatsApp Web URL for any patient.
+     */
+    public function getPatientChatUrl(Patient $patient, string $message = ''): string
+    {
+        $phone = $this->sanitizePhoneNumber($patient->phone);
+        $query = $message ? '?text=' . rawurlencode($message) : '';
+
+        return "https://wa.me/{$phone}{$query}";
+    }
+
+    /**
+     * Dispatch message to external Cloud Gateway if configured, or fallback to simulated log driver.
+     */
+    protected function dispatchToGateway(string $phone, string $body): array
+    {
+        // 1. Meta WhatsApp Cloud API (Graph API)
+        $metaToken = config('services.whatsapp.cloud_token');
+        $metaPhoneId = config('services.whatsapp.phone_number_id');
+
+        if (! empty($metaToken) && ! empty($metaPhoneId)) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::withToken($metaToken)
+                    ->timeout(10)
+                    ->post("https://graph.facebook.com/v20.0/{$metaPhoneId}/messages", [
+                        'messaging_product' => 'whatsapp',
+                        'recipient_type' => 'individual',
+                        'to' => $phone,
+                        'type' => 'text',
+                        'text' => ['preview_url' => false, 'body' => $body],
+                    ]);
+
+                if ($response->successful()) {
+                    $msgId = $response->json('messages.0.id') ?? ('wamid_' . bin2hex(random_bytes(8)));
+                    return ['status' => 'delivered', 'provider_id' => $msgId, 'error' => null];
+                }
+
+                return [
+                    'status' => 'failed',
+                    'provider_id' => null,
+                    'error' => 'Meta API Error: ' . $response->body(),
+                ];
+            } catch (\Throwable $e) {
+                return ['status' => 'failed', 'provider_id' => null, 'error' => $e->getMessage()];
+            }
+        }
+
+        // 2. Twilio WhatsApp API
+        $twilioSid = config('services.twilio.sid');
+        $twilioToken = config('services.twilio.token');
+        $twilioFrom = config('services.twilio.whatsapp_from');
+
+        if (! empty($twilioSid) && ! empty($twilioToken) && ! empty($twilioFrom)) {
+            try {
+                $response = \Illuminate\Support\Facades\Http::withBasicAuth($twilioSid, $twilioToken)
+                    ->timeout(10)
+                    ->asForm()
+                    ->post("https://api.twilio.com/2010-04-01/Accounts/{$twilioSid}/Messages.json", [
+                        'From' => 'whatsapp:' . $twilioFrom,
+                        'To' => 'whatsapp:' . (str_starts_with($phone, '+') ? $phone : '+' . $phone),
+                        'Body' => $body,
+                    ]);
+
+                if ($response->successful()) {
+                    return ['status' => 'delivered', 'provider_id' => $response->json('sid'), 'error' => null];
+                }
+
+                return [
+                    'status' => 'failed',
+                    'provider_id' => null,
+                    'error' => 'Twilio Error: ' . $response->body(),
+                ];
+            } catch (\Throwable $e) {
+                return ['status' => 'failed', 'provider_id' => null, 'error' => $e->getMessage()];
+            }
+        }
+
+        // 3. Simulated / Log Mode (Instant local success when no API credentials configured)
+        return [
+            'status' => 'sent',
+            'provider_id' => 'sim_' . bin2hex(random_bytes(8)),
+            'error' => null,
+        ];
     }
 
     /**

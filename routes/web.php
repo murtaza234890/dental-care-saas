@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/appointments', [\App\Http\Controllers\AppointmentController::class, 'store'])->name('appointments.store');
     Route::patch('/appointments/{appointment}/status', [\App\Http\Controllers\AppointmentController::class, 'updateStatus'])->name('appointments.status');
     Route::post('/appointments/{appointment}/reschedule', [\App\Http\Controllers\AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
+    Route::post('/appointments/{appointment}/send-reminder', [\App\Http\Controllers\AppointmentController::class, 'sendReminder'])->name('appointments.send-reminder');
 
     // Patient Directory & Clinical Profiles
     Route::resource('patients', \App\Http\Controllers\PatientController::class);

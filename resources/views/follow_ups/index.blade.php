@@ -353,4 +353,85 @@
             </div>
         @endif
     </div>
+
+    <!-- Automated WhatsApp Reminders & Notification Audit Trail -->
+    <div class="mt-8 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+            <div>
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    </span>
+                    <span>Automated WhatsApp Reminder Logs</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-1">
+                    Audit trail of 24h advance appointment reminders and recall notifications dispatched to patients.
+                </p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Cron Active (Daily 09:00 AM)
+                </span>
+            </div>
+        </div>
+
+        @if(isset($recentReminders) && $recentReminders->isNotEmpty())
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-600">
+                    <thead class="bg-slate-50/80 text-[10px] uppercase font-bold text-slate-400 border-b border-slate-100">
+                        <tr>
+                            <th class="px-4 py-3">Dispatched Time</th>
+                            <th class="px-4 py-3">Patient</th>
+                            <th class="px-4 py-3">Phone</th>
+                            <th class="px-4 py-3">Appointment Reference</th>
+                            <th class="px-4 py-3">Channel & Status</th>
+                            <th class="px-4 py-3">Message Preview</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach($recentReminders as $notif)
+                            <tr class="hover:bg-slate-50/60 transition">
+                                <td class="px-4 py-3 whitespace-nowrap font-mono text-[11px] text-slate-700">
+                                    {{ $notif->sent_at ? $notif->sent_at->format('M d, Y - h:i A') : $notif->created_at->format('M d, Y - h:i A') }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap font-bold text-slate-900">
+                                    {{ $notif->patient->name ?? 'Unknown' }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap font-mono text-slate-600">
+                                    {{ $notif->recipient_phone }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    @if($notif->appointment)
+                                        <a href="{{ route('appointments.index', ['date' => $notif->appointment->appointment_date->format('Y-m-d')]) }}" class="text-cyan-700 hover:underline font-medium">
+                                            {{ $notif->appointment->appointment_date->format('M d') }} @ {{ \Carbon\Carbon::parse($notif->appointment->starts_at)->format('h:i A') }} ({{ $notif->appointment->doctor->name }})
+                                        </a>
+                                    @else
+                                        <span class="text-slate-400">Direct Patient Notice</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                        <svg class="w-3 h-3 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                        {{ $notif->channel }}: {{ $notif->status }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 max-w-xs truncate text-slate-500 text-[11px]" title="{{ $notif->message_body }}">
+                                    {{ \Illuminate\Support\Str::limit($notif->message_body, 60) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                <svg class="w-8 h-8 text-slate-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <p class="text-xs font-semibold text-slate-700">No Automated Reminders Dispatched Yet</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">
+                    Reminders are automatically dispatched daily at 09:00 AM for appointments scheduled 24 hours in advance.
+                </p>
+            </div>
+        @endif
+    </div>
 </x-layouts.app>

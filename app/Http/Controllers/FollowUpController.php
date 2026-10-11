@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FollowUp;
+use App\Models\NotificationLog;
 use App\Models\Patient;
 use App\Models\TreatmentRecord;
 use Carbon\Carbon;
@@ -72,6 +73,11 @@ class FollowUpController extends Controller
             ->where('updated_at', '>=', Carbon::now()->startOfMonth())
             ->count();
 
+        $recentReminders = NotificationLog::with(['patient', 'appointment.doctor'])
+            ->latest()
+            ->take(10)
+            ->get();
+
         return view('follow_ups.index', compact(
             'followUps',
             'filter',
@@ -80,7 +86,8 @@ class FollowUpController extends Controller
             'overdueCount',
             'dueTodayCount',
             'upcomingCount',
-            'bookedThisMonthCount'
+            'bookedThisMonthCount',
+            'recentReminders'
         ));
     }
 

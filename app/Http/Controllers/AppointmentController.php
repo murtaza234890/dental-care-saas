@@ -258,4 +258,19 @@ class AppointmentController extends Controller
         return redirect()->route('appointments.index', ['date' => $validated['appointment_date']])
             ->with('status', "Appointment successfully rescheduled to {$startsAt->format('d M Y, h:i A')}.");
     }
+
+    /**
+     * Dispatch an on-demand WhatsApp reminder for a specific appointment.
+     */
+    public function sendReminder(Appointment $appointment, \App\Services\WhatsAppNotificationService $notificationService): RedirectResponse
+    {
+        abort_unless($appointment->clinic_id === Auth::user()->clinic_id, 403);
+
+        try {
+            $notificationService->sendAppointmentReminder($appointment, force: true);
+            return redirect()->back()->with('status', "WhatsApp reminder dispatched successfully to {$appointment->patient->name}.");
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', "Could not send reminder: " . $e->getMessage());
+        }
+    }
 }
